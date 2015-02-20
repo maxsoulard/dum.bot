@@ -19,4 +19,20 @@ img {
 	margin: auto;
 }
 
-
+.button {
+    display: inline-block;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 500;
+    font-size: 50px;
+    outline: 0;
+    border-radius: 0;
+    color: white;
+    background: #4472B9;
+    white-space: nowrap;
+    padding: 9px 16px !important;
+    line-height: 1.4;
+    border: 0;
+    position: relative;
+    -webkit-transition: 0.1s;
+    transition: 0.1s;
+}
