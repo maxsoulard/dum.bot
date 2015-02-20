@@ -1,0 +1,22 @@
+body {
+        background-color:#fff;
+        background-position:center;
+        background-repeat:repeat-y;
+        font-family: "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;
+        font-size:15px;
+        color:#777;
+	text-align: center;
+}
+
+img {
+        -moz-transform: scaleY(-1);
+        -o-transform: scaleY(-1);
+        -webkit-transform: scaleY(-1);
+        transform: scaleY(-1);
+        filter: FlipH;
+        -ms-filter: "FlipH";
+	display: block;
+	margin: auto;
+}
+
+

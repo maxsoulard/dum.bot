@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+	<link href="/static/css/style.css" rel="stylesheet">
+    </head>
+
+    <body>
+	<div id="control">
+        	Dum.bot IHM prototype
+        </div>
+    	<div id="container">
+        	<img src="http://192.168.1.15:8083/?action=stream">
+        	</img>
+	</div>
+        <form method="get" action="resetGpio">
+            <button type="submit" class="button">GPIO reset</button>
+        </form>
+    <script src="/static/scripts/virtualjoystick.js"></script>
+    <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+    <script src="/static/scripts/control.js"></script>
+
+    </body>
+</html>
+
