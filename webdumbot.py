@@ -4,6 +4,8 @@ import cherrypy
 from cherrypy.lib.static import serve_file
 from gpiodcmotors import *
 from gpioservo import *
+from trinket import *
+from constantes import *
 
 
 path = os.path.abspath(os.path.dirname(__file__))
@@ -13,6 +15,7 @@ class GpioApp(object):
     def __init__(self):
         self.gpiodcmotors = Gpiodcmotors()
         self.gpioservo = Gpioservo()
+        self.trinket = Trinket()
 
     @cherrypy.expose
     def index(self):
@@ -62,7 +65,8 @@ class GpioApp(object):
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def camLeft(self):
-        self.gpioservo.setDirection('left')
+        # self.gpioservo.setDirection('left')
+        self.trinket.sendCmd(Constantes.CAMLEFT)
         self.gpioservo.turnCam()
 
 
