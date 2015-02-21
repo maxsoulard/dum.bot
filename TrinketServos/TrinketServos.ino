@@ -42,6 +42,7 @@ arduino pin 4 =     OC1B  = PORTB <- _BV(4) = SOIC pin 3 (Analog 2)
 #define TWI_RX_BUFFER_SIZE ( 16 )
 #define SERVO1PIN 4
 #define SERVO2PIN 1
+#define LEDPIN 3
 #endif
 
 Adafruit_SoftServo myServo1, myServo2;
@@ -127,6 +128,7 @@ void turnDown() {
  */
 void receiveEvent(uint8_t howMany)
 {
+    digitalWrite(3, HIGH);
     if (howMany < 1)
     {
         // Sanity-check
@@ -190,13 +192,20 @@ void setup()
     OCR0A = 0xAF;            // any number is OK
     TIMSK |= _BV(OCIE0A);    // Turn on the compare interrupt (below!)
   
+    // Initialisation servo 1
     servo1Position = 90;
     myServo1.attach(SERVO1PIN);
     myServo1.write(servo1Position);           // Tell servo to go to position per quirk
     delay(500);
     
-    pinMode(3, OUTPUT); // OC1B-, Arduino pin 3, ADC
-    digitalWrite(3, LOW);
+    // Initialisation servo 2
+    servo2Position = 180;
+    myServo2.attach(SERVO2PIN);
+    myServo2.write(servo2Position);           // Tell servo to go to position per quirk
+    delay(500);
+    
+    pinMode(LEDPIN, OUTPUT); // OC1B-, Arduino pin 3, ADC
+    digitalWrite(3, LOW);   
 }
 
 void loop()
