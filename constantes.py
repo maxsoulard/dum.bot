@@ -8,4 +8,8 @@ class Constantes():
 
     I2C_INIT = 0x40
     I2C_TRINKET1ADR = 0x04
-    I2C_TIMESLEEP = 0.100
+    I2C_TIMESLEEP = 0.050
+
+
+    # Moteurs
+    SERVO1PIN = 18

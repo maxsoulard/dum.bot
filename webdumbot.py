@@ -47,48 +47,62 @@ class GpioApp(object):
         print("RIGHT")
         self.gpiodcmotors.triggerRight()
 
+    # GESTION DES SERVOS DE LA CAM
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def camUp(self):
-        print("TODO")
-        # self.gpiodcmotors.triggerRight()
-
+	# Pour eviter d'envoye deux fois la meme commande
+        if self.trinket.getDirection() != Constantes.CAMUP:
+            self.trinket.sendCmd(Constantes.CAMUP)
+        else:
+            self.trinket.setDirection(None)
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def camDown(self):
-        print("TODO")
-        # self.gpiodcmotors.triggerRight()
-
+        if self.trinket.getDirection() != Constantes.CAMDOWN:
+            self.trinket.sendCmd(Constantes.CAMDOWN)
+        else:
+            self.trinket.setDirection(None)
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def camLeft(self):
-        # self.gpioservo.setDirection('left')
-        self.trinket.sendCmd(Constantes.CAMLEFT)
-        self.gpioservo.turnCam()
-
+        if self.gpioservo.getDirection() != Constantes.CAMLEFT:
+	    self.gpioservo.setDirection(Constantes.CAMLEFT)
+	    self.gpioservo.turnCam()
+	else:
+	    self.gpioservo.setDirection(None)
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def camRight(self):
-        gpioservo = Gpioservo()
-        if gpioservo.getDirection() == 'right':
-            self.cancelCam()
-        else:
-            gpioservo.setDirection('right')
-            gpioservo.start()
+        if self.gpioservo.getDirection() != Constantes.CAMRIGHT:
+	    self.gpioservo.setDirection(Constantes.CAMRIGHT)
+	    self.gpioservo.turnCam()
+	else:
+	    self.gpioservo.setDirection(None)
 
     def cancelCam(self):
         gpioservo = Gpioservo()
         gpioservo.cancel()
+
+    # FIN GESTION SERVOS CAM
 
     @cherrypy.expose
     def resetGpio(self):
         print("resetGpio")
         self.gpiodcmotors.reset()
         raise cherrypy.HTTPRedirect("/")
+
+
+    @cherrypy.expose
+    def stop(self):
+        print("stop")
+        self.gpiodcmotors.reset()
+	self.gpiodcmotors.stop()
+        exit()
 
 
 

@@ -1,35 +1,55 @@
-import RPi.GPIO as GPIO
 import time
+import wiringpi2 as wiringpi
 from utils import *
+from constantes import *
 
 
 class Gpioservo():
     def __init__(self):
-        GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(21, GPIO.OUT)
-        self.p = GPIO.PWM(21,50)
-        self.p.start(7.5)
+        wiringpi.wiringPiSetupGpio()
+        wiringpi.pinMode(Constantes.SERVO1PIN,2)
+	wiringpi.pwmSetMode(0)
+	wiringpi.pwmSetClock(400)
+	wiringpi.pwmSetRange(1024)
+	try:
+  		wiringpi.pwmWrite(Constantes.SERVO1PIN, 0)
+	except Exception as e:
+		print str(e)
         self.angle = 90
         self.direction = ''
+	self.dtMin, self.dtMax = 35, 120
+	self.dt = self.dtMax
+	wiringpi.pwmWrite(Constantes.SERVO1PIN, self.dt)
 
     def turnCam(self):
-        try:
-            if self.direction == 'left' and self.angle < 180:
-                self.angle += 45
-                self._servoRun()
-            elif self.direction == 'right' and self.angle > 0:
-                self.angle -= 45
-                self._servoRun()
+    	try:
+	    if self.direction == Constantes.CAMLEFT:
+      	        print "CAM LEFT"
+		dtemp = self.dt + 10
+		if dtemp > self.dtMax:
+		    self.dt = self.dtMax
+		else:
+		    self.dt = dtemp
+                wiringpi.pwmWrite(Constantes.SERVO1PIN, self.dt)
+		print "DT = "+str(self.dt)
 
-        except KeyboardInterrupt:
-            self.p.ChangeDutyCycle(7.5)
-            self.p.stop()
-            GPIO.cleanup()
+	    elif self.direction == Constantes.CAMRIGHT:
+                print "CAM RIGHT"
+                dtemp = self.dt - 10
+		if dtemp < self.dtMin:
+		    self.dt = self.dtMin
+		else:
+		    self.dt = dtemp		
 
-    def _servoRun(self):
-        dc = Utils.angletodutycycle(self.angle)
-        self.p.ChangeDutyCycle(dc)
-        time.sleep(1)
+                wiringpi.pwmWrite(Constantes.SERVO1PIN, self.dt)
+		print "DT = "+str(self.dt)
+      	        
+      	    time.sleep(0.2)
+    	except Exception as e:
+      	    # clean up                                                                
+      	    wiringpi.pwmWrite(Constantes.SERVO1PIN, 0)
+      	    print("exiting.")
+	    print(str(e))
 
     def setDirection(self, direction):
         self.direction = direction

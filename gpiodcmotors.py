@@ -38,6 +38,11 @@ class Gpiodcmotors:
         GPIO.output(12, False)
         GPIO.output(8, False)
 
+    def stop(self):
+	self.reset()
+	GPIO.cleanup()
+	exit()
+
     def _reinitLedBool(self):
         self.led7 = False
         self.led8 = False
