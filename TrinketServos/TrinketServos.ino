@@ -45,11 +45,8 @@ arduino pin 4 =     OC1B  = PORTB <- _BV(4) = SOIC pin 3 (Analog 2)
 #define LEDPIN 3
 #endif
 
-Adafruit_SoftServo myServo1, myServo2;
-int16_t  servo1Position;
+Adafruit_SoftServo myServo2;
 int16_t  servo2Position;
-boolean servo1TurnLeft;
-boolean servo1TurnRight;
 boolean servo2TurnUp;
 boolean servo2TurnDown;
 
@@ -79,43 +76,30 @@ void requestEvent()
     }
 }
 
-/*Actions du servo moteur1*/
-void turnRight() {
-  int16_t servo1PositionTemp = servo1Position - 20;
-  if (servo1PositionTemp > 180 || servo1PositionTemp < 0) {
-      return;
-  }
-  else if (servo1PositionTemp >= 160){
-     servo1PositionTemp += 20;
-     servo1PositionTemp -= 5;
-  }
-  else if (servo1PositionTemp >= 175){
-     servo1PositionTemp == 180;
-  }
-  myServo1.write(servo1PositionTemp);
-  servo1Position = servo1PositionTemp;
-}
-
-void turnLeft() {
-  int16_t servo1PositionTemp = servo1Position + 20;
-  if (servo1PositionTemp > 180 || servo1PositionTemp < 0) {
-      return;
-  }
-  else if (servo1PositionTemp >= 160){
-     servo1PositionTemp -= 20;
-     servo1PositionTemp += 5;
-  }
-  else if (servo1PositionTemp >= 175){
-     servo1PositionTemp == 180;
-  }
-  myServo1.write(servo1PositionTemp);
-  servo1Position = servo1PositionTemp;
-}
-
+/*******************************************
+* Gestion des servos. Envoie du signal PWM.
+********************************************/
+/*Actions du servo 1*/
 void turnUp() {
+  int16_t serv2PositionTemp = servo2Position - 35;
+  
+  if (serv2PositionTemp < 0 && servo2Position > 0){
+    serv2PositionTemp = 0;
+  }
+  
+  myServo2.write(serv2PositionTemp);
+  servo2Position = serv2PositionTemp;
 }
 
-void turnDown() { 
+void turnDown() {
+  int16_t servo2PositionTemp = servo2Position + 35;
+  
+  if (servo2PositionTemp > 180 && servo2Position < 180){
+    servo2PositionTemp = 179;
+  }
+  
+  myServo2.write(servo2PositionTemp);
+  servo2Position = servo2PositionTemp;
 }
 
 /*TODO : actions du servo moteur2*/
@@ -128,7 +112,6 @@ void turnDown() {
  */
 void receiveEvent(uint8_t howMany)
 {
-    digitalWrite(3, HIGH);
     if (howMany < 1)
     {
         // Sanity-check
@@ -152,79 +135,48 @@ void receiveEvent(uint8_t howMany)
     {
         i2c_regs[reg_position] = TinyWireS.receive();
         
-        if (reg_position == 2) {
+        /*if (reg_position == 2) {
             if (i2c_regs[reg_position] == 'l') {
               servo1TurnLeft = true;
             }
-            else if (i2c_regs[reg_position] == 'r') {
+        }
+        else if (reg_position == 3) {
+            if (i2c_regs[reg_position] == 'r') {
               servo1TurnRight = true;
             }
-            else if (i2c_regs[reg_position] == 'u') {
+        }*/
+        if (reg_position == 6) {
+            if (i2c_regs[reg_position] == 'u') {
               servo2TurnUp = true;
             }
-            else if (i2c_regs[reg_position] == 'd') {
+        }
+        else if (reg_position == 7) {
+            if (i2c_regs[reg_position] == 'd') {
               servo2TurnDown = true;
             }
         }
         
         reg_position++;
-        if (reg_position >= reg_size)
-        {
+        if (reg_position >= reg_size) {
             reg_position = 0;
         }
     }
 }
 
-
-void setup()
-{
-    servo1TurnLeft = false;
-    // TODO: Tri-state this and wait for input voltage to stabilize     
-    //pinMode(SERVO1PIN, OUTPUT); // OC1A, also The only HW-PWM -pin supported by the tiny core analogWrite
-    
-    /**
-     * Reminder: taking care of pull-ups is the masters job
-     */
-
-    TinyWireS.begin(I2C_SLAVE_ADDRESS);
-    TinyWireS.onReceive(receiveEvent);
-    
-    OCR0A = 0xAF;            // any number is OK
-    TIMSK |= _BV(OCIE0A);    // Turn on the compare interrupt (below!)
-  
-    // Initialisation servo 1
-    servo1Position = 90;
-    myServo1.attach(SERVO1PIN);
-    myServo1.write(servo1Position);           // Tell servo to go to position per quirk
-    delay(500);
-    
-    // Initialisation servo 2
-    servo2Position = 180;
-    myServo2.attach(SERVO2PIN);
-    myServo2.write(servo2Position);           // Tell servo to go to position per quirk
-    delay(500);
-    
-    pinMode(LEDPIN, OUTPUT); // OC1B-, Arduino pin 3, ADC
-    digitalWrite(3, LOW);   
-}
-
+// Boucle principale où déclencher les actions
 void loop()
 {
-    if (servo1TurnLeft){
-        turnLeft();
-        servo1TurnLeft = false;
-    }
-    if (servo1TurnRight){
-        turnRight();
-        servo1TurnRight = false;
-    }
     if (servo2TurnUp){
         turnUp();
         servo2TurnUp = false;
     }
-    if (servo2TurnDown){
+    else if (servo2TurnDown){
         turnDown();
         servo2TurnDown = false;
+    }
+    else {
+        // Trinket prêt à recevoir de nouvelles commandes
+        digitalWrite(3, HIGH);
     }
     /**
      * This is the only way we can detect stop condition (http://www.avrfreaks.net/index.php?name=PNphpBB2&file=viewtopic&p=984716&sid=82e9dc7299a8243b86cf7969dd41b5b5#984716)
@@ -232,6 +184,32 @@ void loop()
      * It will call the function registered via TinyWireS.onReceive(); if there is data in the buffer on stop.
      */
     TinyWireS_stop_check();
+}
+
+
+void setup()
+{
+    servo2TurnUp = false;
+    servo2TurnDown = false;
+
+    TinyWireS.begin(I2C_SLAVE_ADDRESS);
+    TinyWireS.onReceive(receiveEvent);
+    
+    OCR0A = 0xAF;            // any number is OK
+    TIMSK |= _BV(OCIE0A);    // Turn on the compare interrupt (below!)
+    
+    // Initialisation servo 2
+    servo2Position = 90;
+    myServo2.attach(SERVO2PIN);
+    myServo2.write(20);
+    tws_delay(300);
+    myServo2.write(15);
+    tws_delay(300);
+    myServo2.write(servo2Position);  // Initialisation position neutre (90)
+    tws_delay(500);
+    
+    pinMode(LEDPIN, OUTPUT); // OC1B-, Arduino pin 3, ADC
+    digitalWrite(3, HIGH);
 }
 
 // We'll take advantage of the built in millis() timer that goes off
@@ -245,6 +223,6 @@ SIGNAL(TIMER0_COMPA_vect) {
   // every 20 milliseconds, refresh the servos!
   if (counter >= 20) {
     counter = 0;
-    myServo1.refresh();
+    myServo2.refresh();
   }
 }
