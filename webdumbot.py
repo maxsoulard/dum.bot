@@ -52,7 +52,7 @@ class GpioApp(object):
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def camUp(self):
-	# Pour eviter d'envoye deux fois la meme commande
+        # Pour eviter d'envoye deux fois la meme commande
         if self.trinket.getDirection() != Constantes.CAMUP:
             self.trinket.sendCmd(Constantes.CAMUP)
         else:
@@ -70,23 +70,22 @@ class GpioApp(object):
     @cherrypy.tools.json_out()
     def camLeft(self):
         if self.gpioservo.getDirection() != Constantes.CAMLEFT:
-	    self.gpioservo.setDirection(Constantes.CAMLEFT)
-	    self.gpioservo.turnCam()
-	else:
-	    self.gpioservo.setDirection(None)
+            self.gpioservo.setDirection(Constantes.CAMLEFT)
+            self.gpioservo.turnCam()
+        else:
+            self.gpioservo.setDirection(None)
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def camRight(self):
         if self.gpioservo.getDirection() != Constantes.CAMRIGHT:
-	    self.gpioservo.setDirection(Constantes.CAMRIGHT)
-	    self.gpioservo.turnCam()
-	else:
-	    self.gpioservo.setDirection(None)
+            self.gpioservo.setDirection(Constantes.CAMRIGHT)
+            self.gpioservo.turnCam()
+        else:
+            self.gpioservo.setDirection(None)
 
     def cancelCam(self):
-        gpioservo = Gpioservo()
-        gpioservo.cancel()
+        self.gpioservo.cancel()
 
     # FIN GESTION SERVOS CAM
 
@@ -101,7 +100,8 @@ class GpioApp(object):
     def stop(self):
         print("stop")
         self.gpiodcmotors.reset()
-	self.gpiodcmotors.stop()
+        self.gpiodcmotors.stop()
+        self.gpioservo.cancel()
         exit()
 
 
