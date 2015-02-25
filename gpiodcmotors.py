@@ -9,7 +9,7 @@ class Gpiodcmotors:
 
     def __init__(self):
         GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(, GPIO.OUT)
+        GPIO.setup(7, GPIO.OUT)
         GPIO.setup(8, GPIO.OUT)
         GPIO.setup(10, GPIO.OUT)
         GPIO.setup(12, GPIO.OUT)
