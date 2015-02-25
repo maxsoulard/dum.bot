@@ -70,6 +70,7 @@ $(document).ready(function(){
     var baseXJoystickL = null;
     var joystickL	= new VirtualJoystick({
         container	: document.getElementById('container'),
+		stickElement : document.getElementById('stickcontainer'),
         strokeStyle	: 'cyan',
         limitStickTravel: true,
         stickRadius     : 120
@@ -90,6 +91,7 @@ $(document).ready(function(){
     var baseXJoystickR = null;
     var joystickR	= new VirtualJoystick({
         container	: document.getElementById('container'),
+		stickElement : document.getElementById('stickcontainer'),
         strokeStyle	: 'orange',
         limitStickTravel: true,
         stickRadius     : 120

@@ -5,10 +5,16 @@ body {
 	font-family: "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;
 	font-size:15px;
 	color:#777;
+	text-align: center;
+	width: 100%;
 }
 
 .titre {
 	text-align: center;
+}
+
+table {
+	margin: 0 auto;
 }
 
 img {
@@ -22,14 +28,12 @@ img {
 	margin: auto;
 }
 
-.container {
+#container {
     width: auto;
-    height: 70%;
-    padding-left: 8%;
-    padding-right: 8%;
+	height: 70%;
 }
 
-.container img {
+#container > img {
     width: 100%;
     height: auto;
 }
@@ -47,7 +51,6 @@ img {
     padding: 9px 16px !important;
     line-height: 1.4;
     border: 0;
-    position: relative;
     -webkit-transition: 0.1s;
     transition: 0.1s;
 }

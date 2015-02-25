@@ -13,8 +13,6 @@ var VirtualJoystick	= function(opts)
 	this._stickRadius	= opts.stickRadius !== undefined ? opts.stickRadius : 100
 	this._useCssTransform	= opts.useCssTransform !== undefined ? opts.useCssTransform : false
 
-	this._container.style.position	= "relative"
-
 	this._container.appendChild(this._baseEl)
 	this._baseEl.style.position	= "absolute"
 	this._baseEl.style.display	= "none"
