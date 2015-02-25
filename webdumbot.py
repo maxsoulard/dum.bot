@@ -1,6 +1,7 @@
 import os
 
 import cherrypy
+from utilssys import *
 from cherrypy.lib.static import serve_file
 from gpiodcmotors import *
 from gpioservo import *
@@ -102,6 +103,7 @@ class GpioApp(object):
         self.gpiodcmotors.reset()
         self.gpiodcmotors.stop()
         self.gpioservo.cancel()
+        Utilssys.killcampr()
         exit()
 
 

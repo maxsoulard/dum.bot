@@ -13,3 +13,7 @@ class Constantes():
 
     # Moteurs
     SERVO1PIN = 18
+
+
+    # Autres
+    PORT_CAM_PR = 8083
