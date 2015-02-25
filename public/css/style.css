@@ -22,6 +22,18 @@ img {
 	margin: auto;
 }
 
+.container {
+    width: auto;
+    height: 70%;
+    padding-left: 8%;
+    padding-right: 8%;
+}
+
+.container img {
+    width: 100%;
+    height: auto;
+}
+
 .button {
     display: inline-block;
     font-family: 'Source Sans Pro', sans-serif;
