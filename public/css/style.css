@@ -11,6 +11,8 @@ body {
 
 .titre {
 	text-align: center;
+	font-family: 'Bangers', cursive;
+	font-size: 22px;
 }
 
 table {
@@ -42,7 +44,8 @@ img {
     display: inline-block;
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 500;
-    font-size: 20px;
+    font-size: 25px;
+	width: 100%;
     outline: 0;
     border-radius: 0;
     color: white;
@@ -57,4 +60,8 @@ img {
 
 .button#stop {
     background: red;
+}
+
+.button#reset {
+	background: orange;
 }

@@ -2,9 +2,8 @@
 <html>
     <head>
         <meta charset="utf-8" />
-	<link href="/static/css/style.css" rel="stylesheet">
-    </head>
-
+		<link href="/static/css/style.css" rel="stylesheet">
+		<link href='http://fonts.googleapis.com/css?family=Bangers' rel='stylesheet' type='text/css'>
     <body>
 	<div class="titre">
         	Dum.bot IHM prototype
@@ -13,10 +12,10 @@
 		<tr>
 			<td class="buttons">
 				<form method="get" action="modeAuto">
-					<button type="submit" class="button">Mode Auto</button>
+					<button type="submit" class="button">Auto</button>
 				</form><br />
 				<form method="get" action="modeManuel">
-					<button type="submit" class="button">Mode Manuel</button>
+					<button type="submit" class="button">Manuel</button>
 				</form>
 			</td>
 			<td>
@@ -27,7 +26,7 @@
 			</td>
 			<td class="buttons">
 				<form method="get" action="resetGpio">
-					<button type="submit" class="button">GPIO reset</button>
+					<button type="submit" class="button" id="reset">Reset</button>
 				</form><br />
 				<form method="get" action="stop">
 					<button type="submit" class="button" id="stop">Stop</button>
