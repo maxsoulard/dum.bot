@@ -100,9 +100,8 @@ class GpioApp(object):
     @cherrypy.expose
     def stop(self):
         print("stop")
-        self.gpiodcmotors.reset()
-        self.gpiodcmotors.stop()
-        self.gpioservo.cancel()
+        #self.gpiodcmotors.stop()
+        #self.gpioservo.cancel()
         Utilssys.killcampr()
         exit()
 
