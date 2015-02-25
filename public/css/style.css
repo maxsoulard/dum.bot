@@ -1,20 +1,23 @@
 body {
-        background-color:#fff;
-        background-position:center;
-        background-repeat:repeat-y;
-        font-family: "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;
-        font-size:15px;
-        color:#777;
+	background-color:#fff;
+	background-position:center;
+	background-repeat:repeat-y;
+	font-family: "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;
+	font-size:15px;
+	color:#777;
+}
+
+.titre {
 	text-align: center;
 }
 
 img {
-        -moz-transform: scaleY(-1);
-        -o-transform: scaleY(-1);
-        -webkit-transform: scaleY(-1);
-        transform: scaleY(-1);
-        filter: FlipH;
-        -ms-filter: "FlipH";
+	-moz-transform: scaleY(-1);
+	-o-transform: scaleY(-1);
+	-webkit-transform: scaleY(-1);
+	transform: scaleY(-1);
+	filter: FlipH;
+	-ms-filter: "FlipH";
 	display: block;
 	margin: auto;
 }
@@ -23,7 +26,7 @@ img {
     display: inline-block;
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 500;
-    font-size: 50px;
+    font-size: 20px;
     outline: 0;
     border-radius: 0;
     color: white;
@@ -35,4 +38,8 @@ img {
     position: relative;
     -webkit-transition: 0.1s;
     transition: 0.1s;
+}
+
+.button#stop {
+    background: red;
 }

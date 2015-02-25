@@ -6,22 +6,33 @@
     </head>
 
     <body>
-	<div id="control">
+	<div class="titre">
         	Dum.bot IHM prototype
-        </div>
-    	<div id="container">
-        	<img src="http://192.168.1.15:8083/?action=stream">
-        	</img>
 	</div>
-    <br />
-    <div id="buttons">
-	<form method="get" action="resetGpio">
-            <button type="submit" class="button">GPIO reset</button>
-        </form><br />
-	<form method="get" action="stop">
-            <button type="submit" class="button">Stop</button>
-        </form>
-    </div>
+	<table>
+		<tr>
+			<td class="buttons">
+				<form method="get" action="resetGpio">
+					<button type="submit" class="button">Mode Auto</button>
+				</form><br />
+				<form method="get" action="resetGpio">
+					<button type="submit" class="button">Mode Manuel</button>
+				</form>
+			</td>
+			<td id="container">
+				<img src="http://192.168.1.15:8083/?action=stream">
+				</img>
+			</td>
+			<td class="buttons">
+				<form method="get" action="resetGpio">
+					<button type="submit" class="button">GPIO reset</button>
+				</form><br />
+				<form method="get" action="stop">
+					<button type="submit" class="button" id="stop">Stop</button>
+				</form>
+			</td>
+		</tr>
+	</table>
 
     <script src="/static/scripts/virtualjoystick.js"></script>
     <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
