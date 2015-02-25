@@ -4,18 +4,49 @@
         <meta charset="utf-8" />
 		<link href="/static/css/style.css" rel="stylesheet">
 		<link href='http://fonts.googleapis.com/css?family=Bangers' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+		<link href="public/css/normalize.css" rel="stylesheet">
     <body>
 	<div class="titre">
         	Dum.bot IHM prototype
 	</div>
+	<div>
+    <style scoped>
+        .button-success,
+        .button-error,
+        .button-warning,
+        .button-secondary {
+            color: white;
+            border-radius: 4px;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+        }
+        .button-success {
+            background: rgb(28, 184, 65); /* this is a green */
+        }
+        .button-error {
+            background: rgb(202, 60, 60); /* this is a maroon */
+        }
+        .button-warning {
+            background: rgb(223, 117, 20); /* this is an orange */
+        }
+        .button-secondary {
+            background: rgb(66, 184, 221); /* this is a light blue */
+        }
+		.button-xlarge {
+			font-size: 160%;
+		}
+		.button-controls {
+			width: 100%;
+		}
+    </style>
 	<table>
 		<tr>
 			<td class="buttons">
 				<form method="get" action="modeAuto">
-					<button type="submit" class="button">Auto</button>
+					<button type="submit" class="pure-button button-xlarge button-secondary button-controls pure-button-disabled">Auto</button>
 				</form><br />
 				<form method="get" action="modeManuel">
-					<button type="submit" class="button">Manuel</button>
+					<button type="submit" class="pure-button button-xlarge button-secondary button-controls pure-button-disabled">Manuel</button>
 				</form>
 			</td>
 			<td>
@@ -26,10 +57,10 @@
 			</td>
 			<td class="buttons">
 				<form method="get" action="resetGpio">
-					<button type="submit" class="button" id="reset">Reset</button>
+					<button type="submit" class="pure-button button-xlarge button-warning button-controls" id="reset">Reset</button>
 				</form><br />
 				<form method="get" action="stop">
-					<button type="submit" class="button" id="stop">Stop</button>
+					<button type="submit" class="pure-button button-xlarge button-error button-controls" id="stop">Stop</button>
 				</form>
 			</td>
 		</tr>

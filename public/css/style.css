@@ -1,5 +1,5 @@
 body {
-	background-color:#fff;
+	background-color:#EDEDED;
 	background-position:center;
 	background-repeat:repeat-y;
 	font-family: "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;
@@ -64,4 +64,8 @@ img {
 
 .button#reset {
 	background: orange;
+}
+
+.buttons {
+	background-color:white;
 }
