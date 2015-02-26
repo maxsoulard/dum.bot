@@ -1,4 +1,4 @@
-// Constantes actions moteurs
+// Constantes ajax
 
 const FORWARD = '/goForward';
 const BACKWARD = '/goBackward';
@@ -11,6 +11,14 @@ const C_UP = '/camUp';
 const C_DOWN = '/camDown';
 const C_LEFT = '/camLeft';
 const C_RIGHT = '/camRight';
+
+// Classes CSS
+
+const CSS_BUTTON_DISABLED = "pure-button-disabled";
+const CSS_BUTTON_AUTO = "#button-auto";
+const CSS_BUTTON_MANUEL = "#button-manuel";
+const CSS_BUTTON_RESET = "#button-reset";
+const CSS_BUTTON_STOP = "#button-stop";
 
 // pour les joysticks : maps d'actions
 var actionsJoystickL = new Array();
@@ -32,20 +40,36 @@ $(document).ready(function(){
     // Handler sur les boutons
     //////////////////////////////////
 
-    $("#button-auto").click(function() {
-		if ($("#button-auto").attr('class').indexof("pure-button-disabled") == -1){
+    $(CSS_BUTTON_AUTO).click(function() {
+		if (isButtonDisabled(CSS_BUTTON_AUTO)){
 			launchAjaxRequest('/modeAuto');
+			$(CSS_BUTTON_MANUEL).addClass(CSS_BUTTON_DISABLED);
 		}
     });
-    $("#button-manuel").click(function() {
-        launchAjaxRequest('/modeManuel');
+    $(CSS_BUTTON_MANUEL).click(function() {
+        if (isButtonDisabled(CSS_BUTTON_MANUEL)){
+			launchAjaxRequest('/modeManuel');
+			$(CSS_BUTTON_AUTO).addClass(CSS_BUTTON_DISABLED);
+		}
     });
-    $("#button-reset").click(function() {
-        launchAjaxRequest('/resetGpio');
+    $(CSS_BUTTON_RESET).click(function() {
+        if (isButtonDisabled(CSS_BUTTON_RESET)){
+            launchAjaxRequest('/resetGpio');
+        }
     });
-    $("#button-stop").click(function() {
-        launchAjaxRequest('/stop');
+    $(CSS_BUTTON_STOP).click(function() {
+        if (isButtonDisabled(CSS_BUTTON_STOP)){
+            launchAjaxRequest('/stop');
+        }
     });
+
+    var isButtonDisabled = function(buttonId) {
+        if ($(buttonId).attr('class').indexof(CSS_BUTTON_DISABLED) == -1){
+            return true;
+		}
+        return false;
+    }
+
     ///////////////////////////////////
     // Gestion du clavier
     //////////////////////////////////
