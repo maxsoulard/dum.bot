@@ -1,5 +1,5 @@
 body {
-	background-color:#EDEDED;
+	background-color:rgba(0, 0, 0, 0.05);
 	background-position:center;
 	background-repeat:repeat-y;
 	font-family: "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;
@@ -11,7 +11,7 @@ body {
 
 .titre {
 	text-align: center;
-	font-family: 'Bangers', cursive;
+	font-family: 'Fjalla One', sans-serif;
 	font-size: 22px;
 }
 
