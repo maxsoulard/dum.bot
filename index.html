@@ -42,26 +42,19 @@
 	<table>
 		<tr>
 			<td class="buttons">
-				<form method="get" action="modeAuto">
-					<button type="submit" class="pure-button button-xlarge button-secondary button-controls pure-button-disabled">Auto</button>
-				</form><br />
-				<form method="get" action="modeManuel">
-					<button type="submit" class="pure-button button-xlarge button-secondary button-controls pure-button-disabled">Manuel</button>
-				</form>
+                <button type="submit" id="button-auto" class="pure-button button-xlarge button-secondary button-controls pure-button-disabled">Auto</button>
+                <br />
+                <button type="submit" id="button-manuel" class="pure-button button-xlarge button-secondary button-controls pure-button-disabled">Manuel</button>
 			</td>
 			<td>
 				<div id="container">
-				<img src="http://192.168.1.15:8083/?action=stream">
-				</img>
+				    <img src="http://192.168.1.15:8083/?action=stream"></img>
 				</div>
 			</td>
 			<td class="buttons">
-				<form method="get" action="resetGpio">
-					<button type="submit" class="pure-button button-xlarge button-warning button-controls" id="reset">Reset</button>
-				</form><br />
-				<form method="get" action="stop">
-					<button type="submit" class="pure-button button-xlarge button-error button-controls" id="stop">Stop</button>
-				</form>
+                <button type="submit" id="button-reset" class="pure-button button-xlarge button-warning button-controls" id="reset">Reset</button>
+                <br />
+                <button type="submit" id="button-stop" class="pure-button button-xlarge button-error button-controls" id="stop">Stop</button>
 			</td>
 		</tr>
 	</table>

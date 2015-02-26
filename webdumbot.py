@@ -91,6 +91,7 @@ class GpioApp(object):
     # FIN GESTION SERVOS CAM
 
     @cherrypy.expose
+    @cherrypy.tools.json_out()
     def resetGpio(self):
         print("resetGpio")
         self.gpiodcmotors.reset()
@@ -98,6 +99,7 @@ class GpioApp(object):
 
 
     @cherrypy.expose
+    @cherrypy.tools.json_out()
     def stop(self):
         print("stop")
         #self.gpiodcmotors.stop()
@@ -105,7 +107,15 @@ class GpioApp(object):
         Utilssys.killcampr()
         exit()
 
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def modeAuto(self):
+        print("TODO mode auto")
 
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def modeManuel(self):
+        print("TODO mode manuel")
 
     index.exposed = True
 

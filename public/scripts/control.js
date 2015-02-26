@@ -29,6 +29,22 @@ $(document).ready(function(){
     var doingKb = null; // Conserve l'action serveur en cours, commande keyboard
 
     ///////////////////////////////////
+    // Handler sur les boutons
+    //////////////////////////////////
+
+    $("#button-auto").click(function() {
+        launchAjaxRequest('/modeAuto');
+    }
+    $("#button-manuel").click(function() {
+        launchAjaxRequest('/modeManuel');
+    }
+    $("#button-reset").click(function() {
+        launchAjaxRequest('/resetGpio');
+    }
+    $("#button-stop").click(function() {
+        launchAjaxRequest('/stop');
+    }
+    ///////////////////////////////////
     // Gestion du clavier
     //////////////////////////////////
 
@@ -57,7 +73,7 @@ $(document).ready(function(){
     var launchAjaxRequest = function(url) {
         if (url != null) {
             var request = $.ajax({'url': url});
-                request.done(function(response){
+            request.done(function(response){
             });
         }
     };
