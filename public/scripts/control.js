@@ -40,34 +40,43 @@ $(document).ready(function(){
     // Handler sur les boutons
     //////////////////////////////////
 
+	// Init
+	$(CSS_BUTTON_AUTO).toggleClass(CSS_BUTTON_DISABLED);
+
     $(CSS_BUTTON_AUTO).click(function() {
-		if (isButtonDisabled(CSS_BUTTON_AUTO)){
+		if (!isButtonDisabled(CSS_BUTTON_AUTO)){
 			launchAjaxRequest('/modeAuto');
-			$(CSS_BUTTON_MANUEL).addClass(CSS_BUTTON_DISABLED);
+			$(CSS_BUTTON_AUTO).toggleClass(CSS_BUTTON_DISABLED);
+			if (isButtonDisabled(CSS_BUTTON_MANUEL)) {
+				$(CSS_BUTTON_MANUEL).toggleClass(CSS_BUTTON_DISABLED);
+			}
 		}
     });
     $(CSS_BUTTON_MANUEL).click(function() {
-        if (isButtonDisabled(CSS_BUTTON_MANUEL)){
+        if (!isButtonDisabled(CSS_BUTTON_MANUEL)){
 			launchAjaxRequest('/modeManuel');
-			$(CSS_BUTTON_AUTO).addClass(CSS_BUTTON_DISABLED);
+			$(CSS_BUTTON_MANUEL).toggleClass(CSS_BUTTON_DISABLED);
+			if (isButtonDisabled(CSS_BUTTON_AUTO)) {
+                $(CSS_BUTTON_AUTO).toggleClass(CSS_BUTTON_DISABLED);
+            }
 		}
     });
     $(CSS_BUTTON_RESET).click(function() {
-        if (isButtonDisabled(CSS_BUTTON_RESET)){
+        if (!isButtonDisabled(CSS_BUTTON_RESET)){
             launchAjaxRequest('/resetGpio');
+			//$.ajax({'url': '/resetGpio'});
+			//request.done(function(response){
+            //});
         }
     });
     $(CSS_BUTTON_STOP).click(function() {
-        if (isButtonDisabled(CSS_BUTTON_STOP)){
+        if (!isButtonDisabled(CSS_BUTTON_STOP)){
             launchAjaxRequest('/stop');
         }
     });
 
     var isButtonDisabled = function(buttonId) {
-        if ($(buttonId).attr('class').indexof(CSS_BUTTON_DISABLED) == -1){
-            return true;
-		}
-        return false;
+        return $(buttonId).hasClass(CSS_BUTTON_DISABLED);
     }
 
     ///////////////////////////////////
