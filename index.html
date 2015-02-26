@@ -38,12 +38,16 @@
 		.button-controls {
 			width: 100%;
 		}
+		.buttons {
+			vertical-align:middle;
+			position:relative;
+		}
     </style>
 	<table>
 		<tr>
 			<td class="buttons">
-                <button type="submit" id="button-auto" class="pure-button button-xlarge button-secondary button-controls pure-button-disabled">Auto</button>
-                <br />
+				<button type="submit" id="button-auto" class="pure-button button-xlarge button-secondary button-controls pure-button-disabled">Auto</button>
+				<span></span>
                 <button type="submit" id="button-manuel" class="pure-button button-xlarge button-secondary button-controls pure-button-disabled">Manuel</button>
 			</td>
 			<td>
@@ -53,7 +57,7 @@
 			</td>
 			<td class="buttons">
                 <button type="submit" id="button-reset" class="pure-button button-xlarge button-warning button-controls" id="reset">Reset</button>
-                <br />
+                <span></span>
                 <button type="submit" id="button-stop" class="pure-button button-xlarge button-error button-controls" id="stop">Stop</button>
 			</td>
 		</tr>

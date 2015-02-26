@@ -33,17 +33,19 @@ $(document).ready(function(){
     //////////////////////////////////
 
     $("#button-auto").click(function() {
-        launchAjaxRequest('/modeAuto');
-    }
+		if ($("#button-auto").attr('class').indexof("pure-button-disabled") == -1){
+			launchAjaxRequest('/modeAuto');
+		}
+    });
     $("#button-manuel").click(function() {
         launchAjaxRequest('/modeManuel');
-    }
+    });
     $("#button-reset").click(function() {
         launchAjaxRequest('/resetGpio');
-    }
+    });
     $("#button-stop").click(function() {
         launchAjaxRequest('/stop');
-    }
+    });
     ///////////////////////////////////
     // Gestion du clavier
     //////////////////////////////////

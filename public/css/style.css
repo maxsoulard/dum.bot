@@ -58,14 +58,12 @@ img {
     transition: 0.1s;
 }
 
-.button#stop {
-    background: red;
-}
-
-.button#reset {
-	background: orange;
-}
-
 .buttons {
 	background-color:white;
+	padding: 0 5px;
+}
+
+.buttons span {
+	height: 20px;
+	display: block;
 }
