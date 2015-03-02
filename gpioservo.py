@@ -5,7 +5,7 @@ from utils import *
 from constantes import *
 
 
-class Gpioservo(Thread):
+class Gpioservo():
     def __init__(self):
         wiringpi.wiringPiSetupGpio()
         wiringpi.pinMode(Constantes.SERVO1PIN,2)
@@ -22,7 +22,7 @@ class Gpioservo(Thread):
         self.dt = self.dtMax
         wiringpi.pwmWrite(Constantes.SERVO1PIN, self.dt)
 
-    def run(self):
+    def turnCam(self):
         try:
             if self.direction == Constantes.CAMLEFT:
                 print "CAM LEFT"
