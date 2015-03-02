@@ -70,6 +70,8 @@ class GpioApp(object):
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def camLeft(self):
+        self.gpioservo.join()
+        self.gpioservo.start()
         if self.gpioservo.getDirection() != Constantes.CAMLEFT:
             self.gpioservo.setDirection(Constantes.CAMLEFT)
             self.gpioservo.turnCam()
@@ -79,6 +81,8 @@ class GpioApp(object):
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def camRight(self):
+        self.gpioservo.join()
+        self.gpioservo.start()
         if self.gpioservo.getDirection() != Constantes.CAMRIGHT:
             self.gpioservo.setDirection(Constantes.CAMRIGHT)
             self.gpioservo.turnCam()
