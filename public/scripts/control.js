@@ -36,6 +36,12 @@ actionsJoystickR["right"] = C_RIGHT;
 $(document).ready(function(){
     var doingKb = null; // Conserve l'action serveur en cours, commande keyboard
 
+	///////////////////////////////////
+	// Mjpeg stream img
+	////////////////////////
+
+	$("#stream").attr("src","http://"+document.location.hostname+":8083/?action=stream")
+
     ///////////////////////////////////
     // Handler sur les boutons
     //////////////////////////////////

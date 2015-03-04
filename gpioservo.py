@@ -13,7 +13,7 @@ class Gpioservo():
         wiringpi.pwmSetClock(400)
         wiringpi.pwmSetRange(1024)
         try:
-            wiringpi.pwmWrite(Constantes.SERVO1PIN, 0)
+            wiringpi.pwmWrite(Constantes.SERVO1PIN, 42)
         except Exception as e:
             print str(e)
         self.angle = 90
