@@ -9,6 +9,7 @@ print "face_cascade OK"
 #TODO
 #jc = JpegStreamCamera("http://192.168.1.15:8083/?action=stream")
 #img = jc.getImage().save("tmp.jpg")
+#resize img -50% to 320x240
 
 img = cv2.imread('test3.jpg')
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
