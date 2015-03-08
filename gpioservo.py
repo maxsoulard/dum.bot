@@ -9,8 +9,7 @@ class Servo():
         self.angle = 90
         self.direction = ''
         self.dtMin, self.dtMax = 35, 120
-        self.dt = self.dtMax
-
+        self.dt = 65
     def setDirection(self, direction):
         self.direction = direction
 
@@ -33,7 +32,7 @@ class Gpioservo():
         #wiringpi.softPwmCreate(Constantes.SERVO2PIN, 0, 1024)
 
         try:
-            wiringpi.pwmWrite(Constantes.SERVO1PIN, 42)
+            wiringpi.pwmWrite(Constantes.SERVO1PIN, 77)
             #wiringpi.softPwmWrite(Constantes.SERVO2PIN, 42)
         except Exception as e:
             print str(e)
