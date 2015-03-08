@@ -13,8 +13,8 @@ class Gpiodcmotors:
         GPIO.setup(8, GPIO.OUT)
         GPIO.setup(10, GPIO.OUT)
         GPIO.setup(16, GPIO.OUT)
-        GPIO.setup(15, GPIO.OUT)
-        self._reinitgpiobool()
+		GPIO.setup(15, GPIO.OUT)
+		self._reinitgpiobool()
 
     def triggerForward(self):
         self.gpio10 = not self.gpio10
