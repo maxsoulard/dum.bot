@@ -4,6 +4,19 @@ from threading import Thread
 from utils import *
 from constantes import *
 
+class Servo():
+    def __init__(self):
+        self.angle = 90
+        self.direction = ''
+        self.dtMin, self.dtMax = 35, 120
+        self.dt = self.dtMax
+
+    def setDirection(self, direction):
+        self.direction = direction
+
+    def getDirection(self):
+        return self.direction
+
 
 class Gpioservo():
     def __init__(self):
@@ -12,37 +25,44 @@ class Gpioservo():
         wiringpi.pwmSetMode(0)
         wiringpi.pwmSetClock(400)
         wiringpi.pwmSetRange(1024)
+
+        wiringpi.pinMode(Constantes.SERVO2PIN,2)
+        wiringpi.pwmSetMode(0)
+        wiringpi.pwmSetClock(400)
+        wiringpi.pwmSetRange(1024)
+        wiringpi.softPwmCreate(Constantes.SERVO2PIN, 0, 1024)
+
         try:
             wiringpi.pwmWrite(Constantes.SERVO1PIN, 42)
+            wiringpi.softPwmWrite(Constantes.SERVO2PIN, 42)
         except Exception as e:
             print str(e)
-        self.angle = 90
-        self.direction = ''
-        self.dtMin, self.dtMax = 35, 120
-        self.dt = self.dtMax
+
+        self.servo1 = Servo()
+        self.servo2 = Servo()
         wiringpi.pwmWrite(Constantes.SERVO1PIN, self.dt)
 
     def turnCam(self):
         try:
-            if self.direction == Constantes.CAMLEFT:
+            if self.servo1.direction == Constantes.CAMLEFT:
                 print "CAM LEFT"
-                dtemp = self.dt + 10
-                if dtemp > self.dtMax:
-                    self.dt = self.dtMax
+                dtemp = self.servo1.dt + 10
+                if dtemp > self.servo1.dtMax:
+                    self.servo1.dt = self.servo1.dtMax
                 else:
-                    self.dt = dtemp
-                wiringpi.pwmWrite(Constantes.SERVO1PIN, self.dt)
-                print "DT = "+str(self.dt)
+                    self.servo1.dt = dtemp
+                wiringpi.pwmWrite(Constantes.SERVO1PIN, self.servo1.dt)
+                print "DT = "+str(self.servo1.dt)
 
-            elif self.direction == Constantes.CAMRIGHT:
+            elif self.servo1.direction == Constantes.CAMRIGHT:
                 print "CAM RIGHT"
-                dtemp = self.dt - 10
-                if dtemp < self.dtMin:
-                    self.dt = self.dtMin
+                dtemp = self.servo1.dt - 10
+                if dtemp < self.servo1.dtMin:
+                    self.servo1.dt = self.servo1.dtMin
                 else:
-                    self.dt = dtemp
-                wiringpi.pwmWrite(Constantes.SERVO1PIN, self.dt)
-                print "DT = "+str(self.dt)
+                    self.servo1.dt = dtemp
+                wiringpi.pwmWrite(Constantes.SERVO1PIN, self.servo1.dt)
+                print "DT = "+str(self.servo1.dt)
 
             time.sleep(0.2)
         except Exception as e:
@@ -51,8 +71,37 @@ class Gpioservo():
             print("exiting.")
             print(str(e))
 
-    def setDirection(self, direction):
-        self.direction = direction
+    def upDownCam(self):
+        try:
+            if self.servo2.direction == Constantes.CAMUP:
+                print "CAM UP"
+                dtemp = self.servo2.dt + 10
+                if dtemp > self.servo2.dtMax:
+                    self.servo2.dt = self.servo2.dtMax
+                else:
+                    self.servo2.dt = dtemp
+                wiringpi.softPwmWrite(Constantes.SERVO2PIN, self.servo2.dt)
+                print "DT = "+str(self.servo2.dt)
 
-    def getDirection(self):
-        return self.direction
+            elif self.servo2.direction == Constantes.CAMDOWN:
+                print "CAM DOWN"
+                dtemp = self.servo2.dt - 10
+                if dtemp < self.servo2.dtMin:
+                    self.servo2.dt = self.servo2.dtMin
+                else:
+                    self.servo2.dt = dtemp
+                wiringpi.softPwmWrite(Constantes.SERVO2PIN, self.servo2.dt)
+                print "DT = "+str(self.servo2.dt)
+
+            time.sleep(0.2)
+        except Exception as e:
+            # clean up
+            wiringpi.softPwmWrite(Constantes.SERVO2PIN, 0)
+            print("exiting.")
+            print(str(e))
+
+    def getServo1(self):
+        return self.servo1
+
+    def getServo2(self):
+        return self.servo2

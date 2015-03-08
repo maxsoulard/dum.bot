@@ -48,42 +48,54 @@ class GpioApp(object):
         print("RIGHT")
         self.gpiodcmotors.triggerRight()
 
-    # GESTION DES SERVOS DE LA CAM
+    # GESTION DES SERVOS CAM
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def camUp(self):
+        # OLD : le trinket ne servira plus qu'à la gestion du SR04
         # Pour eviter d'envoye deux fois la meme commande
-        if self.trinket.getDirection() != Constantes.CAMUP:
-            self.trinket.sendCmd(Constantes.CAMUP)
+        # if self.trinket.getDirection() != Constantes.CAMUP:
+        #     self.trinket.sendCmd(Constantes.CAMUP)
+        # else:
+        #     self.trinket.setDirection(None)
+        if self.gpioservo.getServo2().getDirection() != Constantes.CAMUP:
+            self.gpioservo.getServo2().setDirection(Constantes.CAMUP)
+            self.gpioservo.turnCam()
         else:
-            self.trinket.setDirection(None)
+            self.gpioservo.getServo2().setDirection(None)
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def camDown(self):
-        if self.trinket.getDirection() != Constantes.CAMDOWN:
-            self.trinket.sendCmd(Constantes.CAMDOWN)
+        # OLD : le trinket ne servira plus qu'à la gestion du SR04
+        # if self.trinket.getDirection() != Constantes.CAMDOWN:
+        #     self.trinket.sendCmd(Constantes.CAMDOWN)
+        # else:
+        #     self.trinket.setDirection(None)
+        if self.gpioservo.getServo2().getDirection() != Constantes.CAMDOWN:
+            self.gpioservo.getServo2().setDirection(Constantes.CAMDOWN)
+            self.gpioservo.turnCam()
         else:
-            self.trinket.setDirection(None)
+            self.gpioservo.getServo2().setDirection(None)
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def camLeft(self):
-        if self.gpioservo.getDirection() != Constantes.CAMLEFT:
-            self.gpioservo.setDirection(Constantes.CAMLEFT)
+        if self.gpioservo.getServo1().getDirection() != Constantes.CAMLEFT:
+            self.gpioservo.getServo1().setDirection(Constantes.CAMLEFT)
             self.gpioservo.turnCam()
         else:
-            self.gpioservo.setDirection(None)
+            self.gpioservo.getServo1().setDirection(None)
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def camRight(self):
-        if self.gpioservo.getDirection() != Constantes.CAMRIGHT:
-            self.gpioservo.setDirection(Constantes.CAMRIGHT)
+        if self.gpioservo.getServo1().getDirection() != Constantes.CAMRIGHT:
+            self.gpioservo.getServo1().setDirection(Constantes.CAMRIGHT)
             self.gpioservo.turnCam()
         else:
-            self.gpioservo.setDirection(None)
+            self.gpioservo.getServo1().setDirection(None)
 
     def cancelCam(self):
         self.gpioservo.cancel()

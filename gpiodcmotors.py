@@ -13,52 +13,48 @@ class Gpiodcmotors:
         GPIO.setup(8, GPIO.OUT)
         GPIO.setup(10, GPIO.OUT)
         GPIO.setup(16, GPIO.OUT)
-        self._reinitLedBool()
+        self._reinitgpiobool()
 
     def triggerForward(self):
-        self.led10 = not self.led10
-        GPIO.output(10, self.led10)
-	self.led7 = not self.led7
-	GPIO.output(7, self.led7)
+        self.gpio10 = not self.gpio10
+        GPIO.output(10, self.gpio10)
+        self.gpio7 = not self.gpio7
+        GPIO.output(7, self.gpio7)
 
     def triggerBackward(self):
-        self.led12 = not self.led12
-        GPIO.output(16, self.led12)
-	self.led8 = not self.led8
-	GPIO.output(8, self.led8)
+        self.gpio16 = not self.gpio16
+        GPIO.output(16, self.gpio16)
+        self.gpio8 = not self.gpio8
+        GPIO.output(8, self.gpio8)
 
     def triggerRight(self):
-        self.led8 = not self.led8
-        GPIO.output(8, self.led8)
-	self.led10 = not self.led10
-	GPIO.output(10, self.led10)
+        self.gpio8 = not self.gpio8
+        GPIO.output(8, self.gpio8)
+        self.gpio10 = not self.gpio10
+        GPIO.output(10, self.gpio10)
 
     def triggerLeft(self):
-        self.led7 = not self.led7
-        GPIO.output(7, self.led7)
-	self.led12 = not self.led12
-	GPIO.output(16, self.led12)
+        self.gpio7 = not self.gpio7
+        GPIO.output(7, self.gpio7)
+        self.gpio16 = not self.gpio16
+        GPIO.output(16, self.gpio16)
 
     def reset(self):
-        self._reinitLedBool()
+        self._reinitgpiobool()
         GPIO.output(7, False)
         GPIO.output(10, False)
         GPIO.output(16, False)
         GPIO.output(8, False)
 
     def stop(self):
-		self.reset()
-		GPIO.cleanup()
-		exit()
-
-    def _reinitLedBool(self):
-        self.led7 = False
-        self.led8 = False
-        self.led10 = False
-        self.led12 = False
-
-def signal_handler(signal, frame):
+        self.reset()
         GPIO.cleanup()
-        sys.exit(0)
+        exit()
 
-signal.signal(signal.SIGINT, signal_handler)
+    def _reinitgpiobool(self):
+        self.gpio7 = False
+        self.gpio8 = False
+        self.gpio10 = False
+        self.gpio16 = False
+
+

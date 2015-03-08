@@ -13,6 +13,7 @@ class Constantes():
 
     # Moteurs
     SERVO1PIN = 18
+    SERVO2PIN = 22
 
 
     # Autres
