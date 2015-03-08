@@ -1,3 +1,5 @@
+# -*- encoding: utf8 -*-
+
 import os
 
 import cherrypy
@@ -61,7 +63,7 @@ class GpioApp(object):
         #     self.trinket.setDirection(None)
         if self.gpioservo.getServo2().getDirection() != Constantes.CAMUP:
             self.gpioservo.getServo2().setDirection(Constantes.CAMUP)
-            self.gpioservo.turnCam()
+            #self.gpioservo.turnCam()
         else:
             self.gpioservo.getServo2().setDirection(None)
 
@@ -75,7 +77,7 @@ class GpioApp(object):
         #     self.trinket.setDirection(None)
         if self.gpioservo.getServo2().getDirection() != Constantes.CAMDOWN:
             self.gpioservo.getServo2().setDirection(Constantes.CAMDOWN)
-            self.gpioservo.turnCam()
+            #self.gpioservo.turnCam()
         else:
             self.gpioservo.getServo2().setDirection(None)
 

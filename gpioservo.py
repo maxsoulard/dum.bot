@@ -26,21 +26,21 @@ class Gpioservo():
         wiringpi.pwmSetClock(400)
         wiringpi.pwmSetRange(1024)
 
-        wiringpi.pinMode(Constantes.SERVO2PIN,2)
-        wiringpi.pwmSetMode(0)
-        wiringpi.pwmSetClock(400)
-        wiringpi.pwmSetRange(1024)
-        wiringpi.softPwmCreate(Constantes.SERVO2PIN, 0, 1024)
+        #wiringpi.pinMode(Constantes.SERVO2PIN,2)
+        #wiringpi.pwmSetMode(0)
+        #wiringpi.pwmSetClock(400)
+        #wiringpi.pwmSetRange(1024)
+        #wiringpi.softPwmCreate(Constantes.SERVO2PIN, 0, 1024)
 
         try:
             wiringpi.pwmWrite(Constantes.SERVO1PIN, 42)
-            wiringpi.softPwmWrite(Constantes.SERVO2PIN, 42)
+            #wiringpi.softPwmWrite(Constantes.SERVO2PIN, 42)
         except Exception as e:
             print str(e)
 
         self.servo1 = Servo()
         self.servo2 = Servo()
-        wiringpi.pwmWrite(Constantes.SERVO1PIN, self.dt)
+        wiringpi.pwmWrite(Constantes.SERVO1PIN, self.servo1.dt)
 
     def turnCam(self):
         try:
