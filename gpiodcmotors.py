@@ -53,10 +53,10 @@ class Gpiodcmotors:
         GPIO.output(10, False)
         GPIO.output(16, False)
         GPIO.output(8, False)
-        GPIO.output(15, False)
+        GPIO.output(11, False)
 
     def stop(self):
-        self.reset()
+        #self.reset()
         GPIO.cleanup()
         exit()
 

@@ -116,7 +116,7 @@ class GpioApp(object):
     @cherrypy.tools.json_out()
     def stop(self):
         print("stop")
-        #self.gpiodcmotors.stop()
+        self.gpiodcmotors.stop()
         #self.gpioservo.cancel()
         Utilssys.killcampr()
         exit()
