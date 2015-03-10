@@ -99,6 +99,15 @@ class GpioApp(object):
         else:
             self.gpioservo.servo1.direction = None
 
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def camCenter(self):
+        if self.gpioservo.servo1.direction != Constantes.CAMCENTER:
+            self.gpioservo.servo1.direction = Constantes.CAMCENTER
+            self.gpioservo.centerCam()
+        else:
+            self.gpioservo.servo1.setDirection(None)
+
     def cancelCam(self):
         self.gpioservo.cancel()
 

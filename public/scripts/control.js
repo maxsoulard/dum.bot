@@ -11,6 +11,7 @@ const C_UP = '/camUp';
 const C_DOWN = '/camDown';
 const C_LEFT = '/camLeft';
 const C_RIGHT = '/camRight';
+const C_CENTER = '/camCenter';
 
 // Classes CSS
 
@@ -32,6 +33,7 @@ actionsJoystickR["up"] = C_UP;
 actionsJoystickR["down"] = C_DOWN;
 actionsJoystickR["left"] = C_LEFT;
 actionsJoystickR["right"] = C_RIGHT;
+actionsJoystickR["center"] = C_CENTER;
 
 $(document).ready(function(){
     var doingKb = null; // Conserve l'action serveur en cours, commande keyboard
@@ -224,15 +226,23 @@ $(document).ready(function(){
             doing.value = actionsJoystick["right"];
             launchAjaxRequest(doing.value);
         }
+        else if (joystick._baseX == joystick._stickX && joystick._baseX != 0 && determineJoystick.isJoystickR) {
+			console.log("center");
+			launchAjaxRequest(doing.value);
+            doing.value = actionsJoystick["center"];
+            launchAjaxRequest(doing.value);
+        }
     }
 
     function DetermineJoystick(basex){
         if( basex < window.innerWidth/2 ) {
+            this.isJoystickR = false;
             this.doing = doingJsL;
             this.actionsJoystick = actionsJoystickL;
         }
         else if( basex >= window.innerWidth/2 ) {
             this.doing = doingJsR;
+            this.isJoystickR = true;
             this.actionsJoystick = actionsJoystickR;
         }
         else {

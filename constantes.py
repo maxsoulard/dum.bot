@@ -5,6 +5,7 @@ class Constantes():
     CAMRIGHT = 'r'
     CAMUP = 'u'
     CAMDOWN = 'd'
+    CAMCENTER = 'c'
 
     I2C_INIT = 0x40
     I2C_TRINKET1ADR = 0x04
