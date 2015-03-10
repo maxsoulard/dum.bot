@@ -1,38 +1,22 @@
-from abc import abstractmethod
 import time
 import os
 import wiringpi2 as wiringpi
-from RPIO import PWM
-from threading import Thread
-from utils import *
 from constantes import *
 
 
-class Servo():
+class ServoPwm():
     def __init__(self, pin):
-        self.direction = ''
-        self.pin = pin
-
-    @abstractmethod
-    def determineval(self):
-        pass
-
-    @abstractmethod
-    def pwmwrite(self):
-        pass
-
-
-class ServoPwm(Servo):
-    def __init__(self):
         self.dtMin, self.dtMax, self.dtMed = 35, 120, 65
         self.dt = self.dtMed
+        self.pin = pin
+        self.direction = ''
         wiringpi.wiringPiSetupGpio()
-        wiringpi.pinMode(Constantes.SERVO1PIN, 2)
+        wiringpi.pinMode(18, 2)
         wiringpi.pwmSetMode(0)
         wiringpi.pwmSetClock(400)
         wiringpi.pwmSetRange(1024)
         try:
-            wiringpi.pwmWrite(Constantes.SERVO1PIN, 77)
+            wiringpi.pwmWrite(18, 40)
         except Exception as e:
             print str(e)
 
@@ -41,21 +25,21 @@ class ServoPwm(Servo):
             self.dt = self.dtMax
         elif dtemp < self.dtMin:
             self.dt = self.dtMin
-        elif self.dtMed - 10 < dtemp < self.dtMed + 10:
-            self.dt = self.dtMed
         else:
             self.dt = dtemp
 
     def pwmwrite(self):
-        wiringpi.pwmWrite(self.pin, self.dt)
-        print "DT = "+str(self.dt)
+        wiringpi.pwmWrite(18, self.dt)
+        print "PIN "+str(self.pin)+"DT = "+str(self.dt)
 
 
-class ServoSoftPwm(Servo):
-    def __init__(self):
+class ServoSoftPwm():
+    def __init__(self, pin):
         self.min, self.max, self.med = 1, 30, 15
         self.val = self.med
-        os.system('sudo ~/pi-blaster/pi-blaster '+Constantes.SERVO2PIN)
+        self.pin = pin
+        self.direction = ''
+        os.system('sudo /home/pi/pi-blaster/pi-blaster '+str(self.pin))
 
     def determineval(self, dtemp):
         if dtemp > self.max:
@@ -66,27 +50,33 @@ class ServoSoftPwm(Servo):
             self.val = dtemp
 
     def pwmwrite(self):
-        val = self.val / float(100)
-        os.system('echo "%d=%f" > /dev/pi-blaster' % (self.pin, val))
+        valtemp = self.val / float(100)
+        os.system('echo "%d=%f" > /dev/pi-blaster' % (self.pin, valtemp))
+        time.sleep(0.2)
+        os.system('echo "%d=0" > /dev/pi-blaster' % (self.pin))
+        print "PIN "+str(self.pin)+"valtemp = "+str(valtemp)+"val = "+str(self.val)
+
 
 class Gpioservo():
     def __init__(self):
-        self.servo1 = ServoPwm(Constantes.SERVO1PIN)
+        # self.servo1 = ServoPwm(Constantes.SERVO1PIN)
+        self.servo1 = ServoSoftPwm(Constantes.SERVO1PIN)
         self.servo2 = ServoSoftPwm(Constantes.SERVO2PIN)
 
     def turnCam(self):
         try:
-            dtemp = self.servo1.dt
             if self.servo1.direction == Constantes.CAMLEFT:
                 print "CAM LEFT"
-                dtemp = self.servo1.dt + 10
+                valtemp = self.servo1.val + 5
+                self.servo1.determineval(valtemp)
+                self.servo1.pwmwrite()
 
             elif self.servo1.direction == Constantes.CAMRIGHT:
                 print "CAM RIGHT"
-                dtemp = self.servo1.dt - 10
+                valtemp = self.servo1.val - 5
+                self.servo1.determineval(valtemp)
+                self.servo1.pwmwrite()
 
-            self.servo1.determineval(dtemp)
-            self.servo1.pwmwrite()
             time.sleep(0.2)
         except Exception as e:
             # clean up
@@ -98,19 +88,15 @@ class Gpioservo():
         try:
             if self.servo2.direction == Constantes.CAMUP:
                 print "CAM UP"
-                valtemp = self.servo2.val + 10
+                valtemp = self.servo2.val - 5
                 self.servo2.determineval(valtemp)
                 self.servo2.pwmwrite()
-
-                print "DT = "+str(self.servo2.dt)
 
             elif self.servo2.direction == Constantes.CAMDOWN:
                 print "CAM DOWN"
-                valtemp = self.servo2.val - 10
+                valtemp = self.servo2.val + 5
                 self.servo2.determineval(valtemp)
                 self.servo2.pwmwrite()
-
-                print "DT = "+str(self.servo2.dt)
 
             time.sleep(0.2)
         except Exception as e:

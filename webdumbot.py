@@ -88,7 +88,7 @@ class GpioApp(object):
             self.gpioservo.servo1.direction = Constantes.CAMLEFT
             self.gpioservo.turnCam()
         else:
-            self.gpioservo.servo1.setDirection(None)
+            self.gpioservo.servo1.direction = None
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
@@ -97,7 +97,7 @@ class GpioApp(object):
             self.gpioservo.servo1.direction = Constantes.CAMRIGHT
             self.gpioservo.turnCam()
         else:
-            self.gpioservo.servo1.setDirection(None)
+            self.gpioservo.servo1.direction = None
 
     def cancelCam(self):
         self.gpioservo.cancel()
