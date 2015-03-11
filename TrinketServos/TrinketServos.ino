@@ -40,15 +40,8 @@ arduino pin 4 =     OC1B  = PORTB <- _BV(4) = SOIC pin 3 (Analog 2)
 // The default buffer size, Can't recall the scope of defines right now
 #ifndef TWI_RX_BUFFER_SIZE
 #define TWI_RX_BUFFER_SIZE ( 16 )
-#define SERVO1PIN 4
-#define SERVO2PIN 1
 #define LEDPIN 3
 #endif
-
-Adafruit_SoftServo myServo2;
-int16_t  servo2Position;
-boolean servo2TurnUp;
-boolean servo2TurnDown;
 
 volatile uint8_t i2c_regs[] =
 {
@@ -76,40 +69,6 @@ void requestEvent()
     }
 }
 
-/*******************************************
-* Gestion des servos. Envoie du signal PWM.
-********************************************/
-/*Actions du servo 1*/
-void turnUp() {
-  int16_t serv2PositionTemp = servo2Position - 35;
-  
-  if (serv2PositionTemp < 0 && servo2Position > 0){
-    serv2PositionTemp = 0;
-  }
-  
-  myServo2.write(serv2PositionTemp);
-  servo2Position = serv2PositionTemp;
-}
-
-void turnDown() {
-  int16_t servo2PositionTemp = servo2Position + 35;
-  
-  if (servo2PositionTemp > 180 && servo2Position < 180){
-    servo2PositionTemp = 179;
-  }
-  
-  myServo2.write(servo2PositionTemp);
-  servo2Position = servo2PositionTemp;
-}
-
-/*TODO : actions du servo moteur2*/
-
-/**
- * The I2C data received -handler
- *
- * This needs to complete before the next incoming transaction (start, data, restart/stop) on the bus does
- * so be quick, set flags for long running tasks to be called from the mainloop instead of running them directly,
- */
 void receiveEvent(uint8_t howMany)
 {
     if (howMany < 1)
@@ -144,7 +103,7 @@ void receiveEvent(uint8_t howMany)
             if (i2c_regs[reg_position] == 'r') {
               servo1TurnRight = true;
             }
-        }*/
+        }
         if (reg_position == 6) {
             if (i2c_regs[reg_position] == 'u') {
               servo2TurnUp = true;
@@ -154,7 +113,7 @@ void receiveEvent(uint8_t howMany)
             if (i2c_regs[reg_position] == 'd') {
               servo2TurnDown = true;
             }
-        }
+        }*/
         
         reg_position++;
         if (reg_position >= reg_size) {
@@ -166,50 +125,29 @@ void receiveEvent(uint8_t howMany)
 // Boucle principale où déclencher les actions
 void loop()
 {
-    if (servo2TurnUp){
-        turnUp();
-        servo2TurnUp = false;
-    }
-    else if (servo2TurnDown){
-        turnDown();
-        servo2TurnDown = false;
-    }
-    else {
-        // Trinket prêt à recevoir de nouvelles commandes
-        digitalWrite(3, HIGH);
-    }
+    digitalWrite(LEDPIN, HIGH);
+    delay(200);
+    digitalWrite(LEDPIN, LOW);
+    delay(100);
     /**
      * This is the only way we can detect stop condition (http://www.avrfreaks.net/index.php?name=PNphpBB2&file=viewtopic&p=984716&sid=82e9dc7299a8243b86cf7969dd41b5b5#984716)
      * it needs to be called in a very tight loop in order not to miss any (REMINDER: Do *not* use delay() anywhere, use tws_delay() instead).
      * It will call the function registered via TinyWireS.onReceive(); if there is data in the buffer on stop.
      */
-    TinyWireS_stop_check();
+    //TinyWireS_stop_check();
 }
 
 
 void setup()
 {
-    servo2TurnUp = false;
-    servo2TurnDown = false;
-
     TinyWireS.begin(I2C_SLAVE_ADDRESS);
     TinyWireS.onReceive(receiveEvent);
     
     OCR0A = 0xAF;            // any number is OK
     TIMSK |= _BV(OCIE0A);    // Turn on the compare interrupt (below!)
     
-    // Initialisation servo 2
-    servo2Position = 90;
-    myServo2.attach(SERVO2PIN);
-    myServo2.write(20);
-    tws_delay(300);
-    myServo2.write(15);
-    tws_delay(300);
-    myServo2.write(servo2Position);  // Initialisation position neutre (90)
-    tws_delay(500);
-    
     pinMode(LEDPIN, OUTPUT); // OC1B-, Arduino pin 3, ADC
-    digitalWrite(3, HIGH);
+    digitalWrite(LEDPIN, HIGH);
 }
 
 // We'll take advantage of the built in millis() timer that goes off
@@ -223,6 +161,5 @@ SIGNAL(TIMER0_COMPA_vect) {
   // every 20 milliseconds, refresh the servos!
   if (counter >= 20) {
     counter = 0;
-    myServo2.refresh();
   }
 }
