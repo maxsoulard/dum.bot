@@ -53,34 +53,23 @@ $(document).ready(function(){
 
     $(CSS_BUTTON_AUTO).click(function() {
 		if (!isButtonDisabled(CSS_BUTTON_AUTO)){
-			launchAjaxRequest('/modeAuto');
+			fireAjaxRequest('/modeAuto');
 			$(CSS_BUTTON_AUTO).toggleClass(CSS_BUTTON_DISABLED);
-			if (isButtonDisabled(CSS_BUTTON_MANUEL)) {
-				$(CSS_BUTTON_MANUEL).toggleClass(CSS_BUTTON_DISABLED);
-			}
+			if (isButtonDisabled(CSS_BUTTON_MANUEL))    $(CSS_BUTTON_MANUEL).toggleClass(CSS_BUTTON_DISABLED);
 		}
     });
     $(CSS_BUTTON_MANUEL).click(function() {
         if (!isButtonDisabled(CSS_BUTTON_MANUEL)){
-			launchAjaxRequest('/modeManuel');
+			fireAjaxRequest('/modeManuel');
 			$(CSS_BUTTON_MANUEL).toggleClass(CSS_BUTTON_DISABLED);
-			if (isButtonDisabled(CSS_BUTTON_AUTO)) {
-                $(CSS_BUTTON_AUTO).toggleClass(CSS_BUTTON_DISABLED);
-            }
+			if (isButtonDisabled(CSS_BUTTON_AUTO))      $(CSS_BUTTON_AUTO).toggleClass(CSS_BUTTON_DISABLED);
 		}
     });
     $(CSS_BUTTON_RESET).click(function() {
-        if (!isButtonDisabled(CSS_BUTTON_RESET)){
-            launchAjaxRequest('/resetGpio');
-			//$.ajax({'url': '/resetGpio'});
-			//request.done(function(response){
-            //});
-        }
+        if (!isButtonDisabled(CSS_BUTTON_RESET))    fireAjaxRequest('/resetGpio');
     });
     $(CSS_BUTTON_STOP).click(function() {
-        if (!isButtonDisabled(CSS_BUTTON_STOP)){
-            launchAjaxRequest('/stop');
-        }
+        if (!isButtonDisabled(CSS_BUTTON_STOP))     fireAjaxRequest('/stop');
     });
 
     var isButtonDisabled = function(buttonId) {
@@ -100,25 +89,21 @@ $(document).ready(function(){
     });
 
     $(document).on('keyup', function(e) {
-        launchAjaxRequest(doingKb);
+        fireAjaxRequest(doingKb);
         doingKb = null;
         down[e.keyCode] = null;
     });
 
     var handlerkeyDown = function(e, keyCode, action) {
         if (e.which === keyCode && down[keyCode] == null && doingKb == null) {
-            launchAjaxRequest(action);
+            fireAjaxRequest(action);
             down[keyCode] = true;
             doingKb = action;
         }
     };
 
-    var launchAjaxRequest = function(url) {
-        if (url != null) {
-            var request = $.ajax({'url': url});
-            request.done(function(response){
-            });
-        }
+    var fireAjaxRequest = function(url) {
+        if (url != null)    var request = $.ajax({'url': url});
     };
 
     ///////////////////////////////////
@@ -194,14 +179,14 @@ $(document).ready(function(){
 	    var doing = determineJoystick.doing;
         var actionsJoystick = determineJoystick.actionsJoystick;
 
-        launchAjaxRequest(doing.value);
+        fireAjaxRequest(doing.value);
         doing.value = null;
 
 //        Object.keys(actionsJoystick).forEach(function(entry) {
-//            strToEval = "if (joystick."+entry+"()){launchAjaxRequest('"+actionsJoystick[entry]+"');}";
+//            strToEval = "if (joystick."+entry+"()){fireAjaxRequest('"+actionsJoystick[entry]+"');}";
 //            eval(strToEval);
 
-//            launchAjaxRequest(actionsJoystick[entry]);
+//            fireAjaxRequest(actionsJoystick[entry]);
 
 //            doing.value = null;
 //        });
@@ -212,34 +197,23 @@ $(document).ready(function(){
 	    var doing = determineJoystick.doing;
         var actionsJoystick = determineJoystick.actionsJoystick;
 
-        if (!joystick.center()) {
-            if (joystick.up() && doing.value != actionsJoystick["up"]) {
-                launchAjaxRequest(doing.value);
-                doing.value = actionsJoystick["up"];
-                launchAjaxRequest(doing.value);
-            }
-            else if (joystick.down() && doing.value != actionsJoystick["down"]) {
-                launchAjaxRequest(doing.value);
-                doing.value = actionsJoystick["down"];
-                launchAjaxRequest(doing.value);
-            }
-            else if (joystick.left() && !joystick.down() && !joystick.up() && doing.value != actionsJoystick["left"]) {
-                launchAjaxRequest(doing.value);
-                doing.value = actionsJoystick["left"];
-                launchAjaxRequest(doing.value);
-            }
-            else if (joystick.right() && !joystick.down() && !joystick.up() && doing.value != actionsJoystick["right"]) {
-                launchAjaxRequest(doing.value);
-                doing.value = actionsJoystick["right"];
-                launchAjaxRequest(doing.value);
-            }
-        }
-        else if (doing.value != actionsJoystick["center"]) {
-			console.log("center");
-			launchAjaxRequest(doing.value);
-            doing.value = actionsJoystick["center"];
-            launchAjaxRequest(doing.value);
-            determineJoystick.isJoystickR = false;
+        if (joystick.up() && doing.value != actionsJoystick["up"])          actionStick("up");
+        else if (joystick.down() && doing.value != actionsJoystick["down"]) actionStick("down");
+        else if (joystick.left() && !joystick.down() && !joystick.up() && doing.value != actionsJoystick["left"])   actionStick("left");
+        else if (joystick.right() && !joystick.down() && !joystick.up() && doing.value != actionsJoystick["right"]) actionStick("right");
+
+//      TODO re centrer camera
+//        if (!joystick.center()) {
+//        }
+//        else if (doing.value != actionsJoystick["center"]) {
+//			console.log("center");
+//            actionStick("center");
+//            determineJoystick.isJoystickR = false;
+//        }
+        function actionStick(actionKey){
+            fireAjaxRequest(doing.value);
+            doing.value = actionsJoystick[actionKey];
+            fireAjaxRequest(doing.value);
         }
     }
 
@@ -254,9 +228,7 @@ $(document).ready(function(){
             this.isJoystickR = true;
             this.actionsJoystick = actionsJoystickR;
         }
-        else {
-            this.doing = null;
-        }
+        else    this.doing = null;
     }
 
     function Doing(value) {
