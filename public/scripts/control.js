@@ -206,28 +206,29 @@ $(document).ready(function(){
 	var doing = determineJoystick.doing;
         var actionsJoystick = determineJoystick.actionsJoystick;
 
-        if (joystick.up() && doing.value != actionsJoystick["up"]) {
-            launchAjaxRequest(doing.value);
-	        doing.value = actionsJoystick["up"];
-            launchAjaxRequest(doing.value);
+        if (!joystick.center()) {
+            if (joystick.up() && doing.value != actionsJoystick["up"]) {
+                launchAjaxRequest(doing.value);
+                doing.value = actionsJoystick["up"];
+                launchAjaxRequest(doing.value);
+            }
+            else if (joystick.down() && doing.value != actionsJoystick["down"]) {
+                launchAjaxRequest(doing.value);
+                doing.value = actionsJoystick["down"];
+                launchAjaxRequest(doing.value);
+            }
+            else if (joystick.left() && !joystick.down() && !joystick.up() && doing.value != actionsJoystick["left"]) {
+                launchAjaxRequest(doing.value);
+                doing.value = actionsJoystick["left"];
+                launchAjaxRequest(doing.value);
+            }
+            else if (joystick.right() && !joystick.down() && !joystick.up() && doing.value != actionsJoystick["right"]) {
+                launchAjaxRequest(doing.value);
+                doing.value = actionsJoystick["right"];
+                launchAjaxRequest(doing.value);
+            }
         }
-        else if (joystick.down() && doing.value != actionsJoystick["down"]) {
-            launchAjaxRequest(doing.value);
-            doing.value = actionsJoystick["down"];
-            launchAjaxRequest(doing.value);
-        }
-        else if (joystick.left() && !joystick.down() && !joystick.up() && doing.value != actionsJoystick["left"]) {
-            launchAjaxRequest(doing.value);
-            doing.value = actionsJoystick["left"];
-            launchAjaxRequest(doing.value);
-        }
-        else if (joystick.right() && !joystick.down() && !joystick.up() && doing.value != actionsJoystick["right"]) {
-            launchAjaxRequest(doing.value);
-            doing.value = actionsJoystick["right"];
-            launchAjaxRequest(doing.value);
-        }
-//        else if (joystick._baseX == joystick._stickX && joystick._baseX != 0 && determineJoystick.isJoystickR && doing.value != actionsJoystick["center"]) {
-        else if (joystick.center() && doing.value != actionsJoystick["center"]) {
+        else if (doing.value != actionsJoystick["center"]) {
 			console.log("center");
 			launchAjaxRequest(doing.value);
             doing.value = actionsJoystick["center"];
