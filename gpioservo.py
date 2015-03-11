@@ -110,8 +110,8 @@ class Gpioservo():
     def centerCam(self):
         try:
             if self.servo1.direction == Constantes.CAMCENTER:
-                valtemp = self.servo1.med
-                valtemp2 = self.servo2.med
+                valtemp = 17
+                valtemp2 = 20
                 self.servo1.determineval(valtemp)
                 self.servo1.pwmwrite()
                 self.servo2.determineval(valtemp2)

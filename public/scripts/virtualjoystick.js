@@ -138,6 +138,15 @@ VirtualJoystick.prototype.left	= function(){
 	if( Math.abs(deltaY) > 2*Math.abs(deltaX) )	return false;
 	return true;	
 }
+// handle center position
+VirtualJoystick.prototype.center	= function(){
+	if( this._pressed === false )	return false;
+	var deltaX	= this.deltaX();
+	var deltaY	= this.deltaY();
+	if( deltaX != 0 || this.baseX == 0 ) return false;
+	if( deltaY != 0 || this.baseY == 0 ) return false;
+	return true;
+}
 
 //////////////////////////////////////////////////////////////////////////////////
 //										//
