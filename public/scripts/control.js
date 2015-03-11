@@ -191,19 +191,25 @@ $(document).ready(function(){
 
     function handlerJoystickEnd(joystick) {
         var determineJoystick = new DetermineJoystick(joystick._baseX);
-	var doing = determineJoystick.doing;
+	    var doing = determineJoystick.doing;
         var actionsJoystick = determineJoystick.actionsJoystick;
 
-        Object.keys(actionsJoystick).forEach(function(entry) {
-            strToEval = "if (joystick."+entry+"()){launchAjaxRequest('"+actionsJoystick[entry]+"');}";
-            eval(strToEval);
-            doing.value = null;
-        });
+        launchAjaxRequest(doing.value);
+        doing.value = null;
+
+//        Object.keys(actionsJoystick).forEach(function(entry) {
+//            strToEval = "if (joystick."+entry+"()){launchAjaxRequest('"+actionsJoystick[entry]+"');}";
+//            eval(strToEval);
+
+//            launchAjaxRequest(actionsJoystick[entry]);
+
+//            doing.value = null;
+//        });
     }
 
     function handlerJoystickStart(joystick) {
         var determineJoystick = new DetermineJoystick(joystick._baseX);
-	var doing = determineJoystick.doing;
+	    var doing = determineJoystick.doing;
         var actionsJoystick = determineJoystick.actionsJoystick;
 
         if (!joystick.center()) {
