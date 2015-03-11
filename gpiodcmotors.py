@@ -15,6 +15,7 @@ class Gpiodcmotors:
         GPIO.setup(16, GPIO.OUT)
         GPIO.setup(11, GPIO.OUT)
 	GPIO.setup(13, GPIO.OUT)
+	GPIO.setwarnings(False)
         self._reinitgpiobool()
 
     def triggerForward(self):

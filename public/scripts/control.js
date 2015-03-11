@@ -226,11 +226,13 @@ $(document).ready(function(){
             doing.value = actionsJoystick["right"];
             launchAjaxRequest(doing.value);
         }
-        else if (joystick._baseX == joystick._stickX && joystick._baseX != 0 && determineJoystick.isJoystickR) {
+//        else if (joystick._baseX == joystick._stickX && joystick._baseX != 0 && determineJoystick.isJoystickR && doing.value != actionsJoystick["center"]) {
+        else if (joystick.center() && doing.value != actionsJoystick["center"]) {
 			console.log("center");
 			launchAjaxRequest(doing.value);
             doing.value = actionsJoystick["center"];
             launchAjaxRequest(doing.value);
+            determineJoystick.isJoystickR = false;
         }
     }
 
