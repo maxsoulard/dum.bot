@@ -1,46 +1,41 @@
 #!/usr/bin/python
 # -*- encoding: utf8 -*-
 
+import smbus
 import time
-from Adafruit_I2C import Adafruit_I2C
-from constantes import *
 
+class TrinketI2C():
 
-class Trinket():
     def __init__(self):
-        self.i2c = Adafruit_I2C(Constantes.I2C_TRINKET1ADR)
-        self.direction = ''
+        self.DEV_ADDR = 0x04
+        self.bus = smbus.SMBus(1)
+        self.reads = 0
+        self.errs = 0
+        self.reads += 1
+        self.vals = []
+        self.av = 0
 
-    def __writeI2C(self):
-        # Ecriture de deux bytes, le registre (ici à 0) et la valeur hexa 0x40
-        #self.i2c.write8(0, Constantes.I2C_INIT)
-
-        # Donner un delais au périphérique I2C pour qu'il soit prêt a recevoir
-        # une nouvelle communication... sinon on recoit l'erreur
-        #   Error accessing 0x04: Check your I2C address
-
-        if self.direction is not None and len(self.direction) == 1:
-            if self.direction == 'u':
-                    self.i2c.writeList(0x06, [ord(self.direction)])
-            elif self.direction == 'd':
-                    self.i2c.writeList(0x07, [ord(self.direction)])
-            time.sleep(Constantes.I2C_TIMESLEEP)
-
-    def sendCmd(self, direction=None):
-        self.direction = direction
-        # TODO à completer
-        # TODO A simplifier, en cas d'erreur I2C non dispo on réessaye
+    def readvalues(self):
         try:
-            self.__writeI2C()
-        except IOError, err:
-            time.sleep(Constantes.I2C_TIMESLEEP)
-            try:
-                self.__writeI2C()
-            except IOError, err:
-                print "ERROR I2C TRINKET"
+            # read value from i2c (trinket)
+            a_val = self.bus.read_word_data(self.DEV_ADDR, 0)
+            self.vals.append(a_val)
+            # print("Read value [%s]; no. of reads [%s]; no. of errors [%s]" % (a_val, reads, errs))
+            # if 10 values were read, calculate the average without too big values which are probably errors
+            if self.reads == 10:
+                # delete big values
+                for a in self.vals:
+                    if len(str(a)) > 2:
+                        self.vals.remove(a)
+                # average
+                self.av = sum(self.vals, 0.0) / len(self.vals)
 
-    def getDirection(self):
-        return self.direction
+                # reads can now be interpreted
+                return True
 
-    def setDirection(self, direction):
-        self.direction = direction
+            return False
+        except Exception as ex:
+            self.errs += 1
+            print("Exception [%s]" % (ex))
+
+        time.sleep(0.2)

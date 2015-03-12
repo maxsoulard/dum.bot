@@ -11,12 +11,12 @@ class ServoPwm():
         self.pin = pin
         self.direction = ''
         wiringpi.wiringPiSetupGpio()
-        wiringpi.pinMode(18, 2)
+        wiringpi.pinMode(self.pin, 2)
         wiringpi.pwmSetMode(0)
         wiringpi.pwmSetClock(400)
         wiringpi.pwmSetRange(1024)
         try:
-            wiringpi.pwmWrite(18, 40)
+            wiringpi.pwmWrite(self.pin, 40)
         except Exception as e:
             print str(e)
 
@@ -29,7 +29,7 @@ class ServoPwm():
             self.dt = dtemp
 
     def pwmwrite(self):
-        wiringpi.pwmWrite(18, self.dt)
+        wiringpi.pwmWrite(self.pin, self.dt)
         print "PIN "+str(self.pin)+"DT = "+str(self.dt)
 
 
@@ -72,13 +72,13 @@ class Gpioservo():
         try:
             if self.servo1.direction == Constantes.CAMLEFT:
                 print "CAM LEFT"
-                valtemp = self.servo1.val + 5
+                valtemp = self.servo1.dt + 10
                 self.servo1.determineval(valtemp)
                 self.servo1.pwmwrite()
 
             elif self.servo1.direction == Constantes.CAMRIGHT:
                 print "CAM RIGHT"
-                valtemp = self.servo1.val - 5
+                valtemp = self.servo1.dt - 10
                 self.servo1.determineval(valtemp)
                 self.servo1.pwmwrite()
 

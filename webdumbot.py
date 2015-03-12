@@ -18,7 +18,8 @@ class GpioApp(object):
     def __init__(self):
         self.gpiodcmotors = Gpiodcmotors()
         self.gpioservo = Gpioservo()
-        self.trinket = Trinket()
+        self.trinket = TrinketI2C()
+        self.modeauto = False
 
     @cherrypy.expose
     def index(self):
@@ -133,12 +134,22 @@ class GpioApp(object):
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def modeAuto(self):
-        print("TODO mode auto")
+        print("mode auto")
+        self.modeauto = True
+        self.gpiodcmotors.triggerForward()
+        while(self.modeauto):
+            if self.trinket.readvalues():
+                if self.trinket.av < 10:
+                    self.gpiodcmotors.triggerBackward()
+                    time.sleep(5)
+                    self.gpiodcmotors.reset()
+
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def modeManuel(self):
-        print("TODO mode manuel")
+        print("mode manuel")
+        self.modeauto = False
 
     index.exposed = True
 
