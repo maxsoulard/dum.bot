@@ -49,7 +49,7 @@ $(document).ready(function(){
     //////////////////////////////////
 
 	// Init
-	$(CSS_BUTTON_AUTO).toggleClass(CSS_BUTTON_DISABLED);
+	$(CSS_BUTTON_MANUEL).toggleClass(CSS_BUTTON_DISABLED);
 
     $(CSS_BUTTON_AUTO).click(function() {
 		if (!isButtonDisabled(CSS_BUTTON_AUTO)){

@@ -9,11 +9,12 @@ from gpiodcmotors import *
 from gpioservo import *
 from trinket import *
 from constantes import *
+import threading
 
 
 path = os.path.abspath(os.path.dirname(__file__))
 
-class GpioApp(object):
+class Webdumbot(object):
 
     def __init__(self):
         self.gpiodcmotors = Gpiodcmotors()
@@ -131,19 +132,38 @@ class GpioApp(object):
         Utilssys.killcampr()
         exit()
 
+    def launchautothread(self):
+        vals = []
+        while(self.modeauto):
+            valtemp = self.trinket.readvalues()
+            if valtemp is not None:
+                vals.append(valtemp)
+
+                if len(vals) == 5:
+                    # if 10 values were read, calculate the average without too big values which are probably errors
+                    # delete big values
+                    for v in vals:
+                        # TODO ignore lower and higher value
+                        if len(str(v)) > 2:
+                            vals.remove(v)
+                    # average
+                    av = sum(vals, 0.0) / len(vals)
+                    # reads can now be interpreted
+                    print "trinket distance average : "+str(av)
+                    if av < 10:
+                        # self.gpiodcmotors.triggerBackward()
+                        time.sleep(5)
+                        print "Obstacle droit devant ! "+str(av)
+                        # self.gpiodcmotors.reset()
+
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def modeAuto(self):
         print("mode auto")
         self.modeauto = True
-        self.gpiodcmotors.triggerForward()
-        while(self.modeauto):
-            if self.trinket.readvalues():
-                if self.trinket.av < 10:
-                    self.gpiodcmotors.triggerBackward()
-                    time.sleep(5)
-                    self.gpiodcmotors.reset()
-
+        # self.gpiodcmotors.triggerForward()
+        self.autothread = threading.Thread(target=self.launchautothread)
+        self.autothread.start()
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
@@ -169,4 +189,4 @@ if __name__ == '__main__':
             'server.socket_port': 8079
         }
     }
-    cherrypy.quickstart(GpioApp(), '/', conf)
+    cherrypy.quickstart(Webdumbot(), '/', conf)
