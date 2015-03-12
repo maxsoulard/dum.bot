@@ -2,8 +2,8 @@
 #include <Adafruit_SoftServo.h>  // SoftwareServo (works on non PWM pins)
 
 #define I2C_SLAVE_ADDRESS 0x04
-#define PIN_TRIG 3
-#define PIN_ECHO 4
+#define PIN_TRIG 4
+#define PIN_ECHO 3
 #define SERVO1PIN 1
 
 //Adafruit_SoftServo myServo1;
