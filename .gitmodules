@@ -1,3 +1,6 @@
 [submodule "virtualjoystick.js"]
 	path = virtualjoystick.js
 	url = https://github.com/jeromeetienne/virtualjoystick.js.git
+[submodule "public/scripts/externals/virtualjoystick.js"]
+	path = public/scripts/externals/virtualjoystick.js
+	url = https://github.com/jeromeetienne/virtualjoystick.js.git
