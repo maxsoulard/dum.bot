@@ -7,20 +7,18 @@ from utilssys import *
 from cherrypy.lib.static import serve_file
 from gpiodcmotors import *
 from gpioservo import *
-from trinket import *
 from constantes import *
-import threading
+from modeauto import Autothread
 
 
 path = os.path.abspath(os.path.dirname(__file__))
 
-class Webdumbot(object):
 
+class Webdumbot(object):
     def __init__(self):
         self.gpiodcmotors = Gpiodcmotors()
         self.gpioservo = Gpioservo()
-        self.trinket = TrinketI2C()
-        self.modeauto = False
+        self.autothread = Autothread('Auto thread')
 
     @cherrypy.expose
     def index(self):
@@ -128,52 +126,22 @@ class Webdumbot(object):
     def stop(self):
         print("stop")
         self.gpiodcmotors.stop()
-        #self.gpioservo.cancel()
         Utilssys.killcampr()
         exit()
-
-    def launchautothread(self):
-        vals = []
-        while(self.modeauto):
-            # TODO à tester
-            try:
-                valtemp = self.trinket.readvalues()
-                if valtemp is not None:
-                    vals.append(valtemp)
-
-                    if len(vals) == 5:
-                        # if 10 values were read, calculate the average without too big values which are probably errors
-                        # delete big values
-                        for v in vals:
-                            # TODO ignore lower and higher values
-                            if len(str(v)) > 2:
-                                vals.remove(v)
-                        # average
-                        av = sum(vals, 0.0) / len(vals)
-                        # reads can now be interpreted
-                        print "trinket distance average : "+str(av)
-                        if av < 10:
-                            # self.gpiodcmotors.triggerBackward()
-                            time.sleep(5)
-                            print "Obstacle droit devant ! "+str(av)
-                            # self.gpiodcmotors.reset()
-            except:
-                pass
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def modeAuto(self):
         print("mode auto")
-        self.modeauto = True
         # self.gpiodcmotors.triggerForward()
-        self.autothread = threading.Thread(target=self.launchautothread)
+        # self.autothread = threading.Thread(target=self.launchautothread)
         self.autothread.start()
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def modeManuel(self):
         print("mode manuel")
-        self.modeauto = False
+        self.autothread.stop()
 
     index.exposed = True
 
