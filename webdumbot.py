@@ -55,31 +55,24 @@ class Webdumbot(object):
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def camUp(self):
-        # OLD : le trinket ne servira plus qu'à la gestion du SR04
-        # Pour eviter d'envoye deux fois la meme commande
-        # if self.trinket.getDirection() != Constantes.CAMUP:
-        #     self.trinket.sendCmd(Constantes.CAMUP)
+        # TODO cam up and down
+        # if self.gpioservo.servo2.direction != Constantes.CAMUP:
+        #     self.gpioservo.servo2.direction = Constantes.CAMUP
+        #     self.gpioservo.upDownCam()
         # else:
-        #     self.trinket.setDirection(None)
-        if self.gpioservo.servo2.direction != Constantes.CAMUP:
-            self.gpioservo.servo2.direction = Constantes.CAMUP
-            self.gpioservo.upDownCam()
-        else:
-            self.gpioservo.servo2.direction = None
+        #     self.gpioservo.servo2.direction = None
+        pass
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def camDown(self):
-        # OLD : le trinket ne servira plus qu'à la gestion du SR04
-        # if self.trinket.getDirection() != Constantes.CAMDOWN:
-        #     self.trinket.sendCmd(Constantes.CAMDOWN)
+        # TODO cam up and down
+        # if self.gpioservo.servo2.direction != Constantes.CAMDOWN:
+        #     self.gpioservo.servo2.direction = Constantes.CAMDOWN
+        #     self.gpioservo.upDownCam()
         # else:
-        #     self.trinket.setDirection(None)
-        if self.gpioservo.servo2.direction != Constantes.CAMDOWN:
-            self.gpioservo.servo2.direction = Constantes.CAMDOWN
-            self.gpioservo.upDownCam()
-        else:
-            self.gpioservo.servo2.direction = None
+        #     self.gpioservo.servo2.direction = None
+        pass
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
