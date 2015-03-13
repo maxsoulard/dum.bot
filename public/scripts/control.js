@@ -1,11 +1,16 @@
-// Constantes ajax
+// Constantes
+// ajax
 
 const FORWARD = '/goForward';
 const BACKWARD = '/goBackward';
 const LEFT = '/turnLeft';
 const RIGHT = '/turnRight';
 
-// Constantes actions camera
+// Kb actions
+keyCodes = {'up':90, 'down':68, 'left':81, 'right':83}
+actionsKb = {keyCodes['up']:FORWARD, keyCodes['down']:BACKWARD, keyCodes['left']:LEFT, keyCodes['right']:RIGHT}
+
+// actions camera
 
 const C_UP = '/camUp';
 const C_DOWN = '/camDown';
@@ -82,23 +87,25 @@ $(document).ready(function(){
 
     down = {}; // Conserve l'état des touches actionnées
     $(document).on('keydown', function(e) {
-        handlerkeyDown(e, 90, FORWARD); // Z
-        handlerkeyDown(e, 81, LEFT); // Q
-        handlerkeyDown(e, 68, RIGHT); // S
-        handlerkeyDown(e, 83, BACKWARD); // D
+        handlerkeyDown(e, keyCodes['up']); // Z
+        handlerkeyDown(e, keyCodes['left']); // Q
+        handlerkeyDown(e, keyCodes['down']); // S
+        handlerkeyDown(e, keyCodes['right']); // D
     });
 
     $(document).on('keyup', function(e) {
-        fireAjaxRequest(doingKb);
-        doingKb = null;
-        down[e.keyCode] = null;
+        if (e.which === keyCodes['up'] || e.which === keyCodes['down']) {
+            fireAjaxRequest(doingKb);
+            doingKb = null;
+            down[e.keyCode] = null;
+        }
     });
 
-    var handlerkeyDown = function(e, keyCode, action) {
+    var handlerkeyDown = function(e, keyCode) {
         if (e.which === keyCode && down[keyCode] == null && doingKb == null) {
-            fireAjaxRequest(action);
+            fireAjaxRequest(actionsKb[keyCode]);
             down[keyCode] = true;
-            doingKb = action;
+            doingKb = actionsKb[keyCode];
         }
     };
 
@@ -110,7 +117,7 @@ $(document).ready(function(){
     // Gestion du joystick gauche (moteurs)
     //////////////////////////////////
 
-    var doingJsL = new Doing();
+    var doingJsL = {};
     var baseXJoystickL = null;
     var joystickL	= new VirtualJoystick({
         container	: document.getElementById('container'),
@@ -131,7 +138,7 @@ $(document).ready(function(){
     // Gestion du joystick droit (caméra)
     //////////////////////////////////
 
-    var doingJsR = new Doing();
+    var doingJsR = {};
     var baseXJoystickR = null;
     var joystickR	= new VirtualJoystick({
         container	: document.getElementById('container'),
@@ -179,10 +186,8 @@ $(document).ready(function(){
 	    var doing = determineJoystick.doing;
         var actionsJoystick = determineJoystick.actionsJoystick;
 
-        if (doing.value == actionsJoystick["up"] || doing.value == actionsJoystick["down"]) {
-            fireAjaxRequest(doing.value);
-            doing.value = null;
-        }
+        if (doing.value == actionsJoystick["up"] || doing.value == actionsJoystick["down"]) fireAjaxRequest(doing.value);
+        doing.value = null;
 
 //        Object.keys(actionsJoystick).forEach(function(entry) {
 //            strToEval = "if (joystick."+entry+"()){fireAjaxRequest('"+actionsJoystick[entry]+"');}";
@@ -201,7 +206,7 @@ $(document).ready(function(){
 
         if (joystick.up() && doing.value != actionsJoystick["up"])          actionStick("up");
         else if (joystick.down() && doing.value != actionsJoystick["down"]) actionStick("down");
-        else if (joystick.left() && !joystick.down() && !joystick.up() && doing.value != actionsJoystick["left"])   actionStick("left");
+        else if (joystick.left() && !joystick.down() && !joystick.up() && doing.value != actionsJoystick["left"]) actionStick("left");
         else if (joystick.right() && !joystick.down() && !joystick.up() && doing.value != actionsJoystick["right"]) actionStick("right");
 
 //      TODO re centrer camera
