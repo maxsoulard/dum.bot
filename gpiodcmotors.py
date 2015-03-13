@@ -2,67 +2,60 @@
 
 import RPi.GPIO as GPIO
 import time
-import signal
-import sys
+
+
+class Gpio:
+    def __init__(self, pin):
+        self.pin = pin
+        self.status = False
+        GPIO.setup(self.pin, GPIO.OUT)
+
+    def output(self, bool):
+        self.status = bool
+        GPIO.output(self.pin, self.status)
+
 
 class Gpiodcmotors:
 
     def __init__(self):
         GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(7, GPIO.OUT)
-        GPIO.setup(8, GPIO.OUT)
-        GPIO.setup(10, GPIO.OUT)
-        GPIO.setup(16, GPIO.OUT)
-        GPIO.setup(11, GPIO.OUT)
-        GPIO.setup(13, GPIO.OUT)
+        self.gpio7 = Gpio(7)
+        self.gpio8 = Gpio(8)
+        self.gpio10 = Gpio(10)
+        self.gpio16 = Gpio(16)
         GPIO.setwarnings(False)
-        self._reinitgpiobool()
+        self.reset()
 
     def triggerForward(self):
-        self.gpio10 = not self.gpio10
-        GPIO.output(10, self.gpio10)
-        self.gpio7 = not self.gpio7
-        GPIO.output(7, self.gpio7)
-        GPIO.output(11, self.gpio7)
-        GPIO.output(13, self.gpio7)
+        self.gpio10.output(not self.gpio10.status)
+        self.gpio7.output(not self.gpio7.status)
 
     def triggerBackward(self):
-        self.gpio16 = not self.gpio16
-        GPIO.output(16, self.gpio16)
-        self.gpio8 = not self.gpio8
-        GPIO.output(8, self.gpio8)
-        GPIO.output(11, self.gpio8)
-        GPIO.output(13, self.gpio8)
+        self.gpio8.output(not self.gpio8.status)
+        self.gpio16.output(not self.gpio16.status)
 
     def triggerRight(self):
-        self.gpio8 = not self.gpio8
-        GPIO.output(8, self.gpio8)
-        self.gpio10 = not self.gpio10
-        GPIO.output(10, self.gpio10)
-        GPIO.output(13, self.gpio10)
+        self.gpio8.output(not self.gpio8.status)
+        self.gpio10.output(not self.gpio10.status)
+        time.sleep(0.5)
+        self.gpio8.output(not self.gpio8.status)
+        self.gpio10.output(not self.gpio10.status)
+
 
     def triggerLeft(self):
-        self.gpio7 = not self.gpio7
-        GPIO.output(7, self.gpio7)
-        self.gpio16 = not self.gpio16
-        GPIO.output(16, self.gpio16)
-        GPIO.output(11, self.gpio16)
+        self.gpio7.output(not self.gpio7.status)
+        self.gpio16.output(not self.gpio16.status)
+        time.sleep(0.5)
+        self.gpio7.output(not self.gpio7.status)
+        self.gpio16.output(not self.gpio16.status)
 
     def reset(self):
-        self._reinitgpiobool()
-        GPIO.output(7, False)
-        GPIO.output(10, False)
-        GPIO.output(16, False)
-        GPIO.output(8, False)
-        GPIO.output(11, False)
+        self.gpio7.output(False)
+        self.gpio8.output(False)
+        self.gpio10.output(False)
+        self.gpio16.output(False)
 
     def stop(self):
         # self.reset()
         GPIO.cleanup()
         exit()
-
-    def _reinitgpiobool(self):
-        self.gpio7 = False
-        self.gpio8 = False
-        self.gpio10 = False
-        self.gpio16 = False

@@ -15,7 +15,7 @@ class TrinketI2C():
         self.av = 0
 
     def readvalues(self):
-        try:
+        # try:
             # read value from i2c (trinket)
             a_val = self.bus.read_word_data(self.DEV_ADDR, 0)
             self.vals.append(a_val)
@@ -23,10 +23,9 @@ class TrinketI2C():
 
             return a_val
 
-            return False
-        except Exception as ex:
+        # except Exception as ex:
             # TODO gestion exception à remonter à webdumbot
-            self.errs += 1
-            print("Exception [%s]" % (ex))
-
-        time.sleep(0.2)
+            # self.errs += 1
+            # print("Exception [%s]" % (ex))
+            # return 1000
+            # pass

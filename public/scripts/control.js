@@ -179,8 +179,10 @@ $(document).ready(function(){
 	    var doing = determineJoystick.doing;
         var actionsJoystick = determineJoystick.actionsJoystick;
 
-        fireAjaxRequest(doing.value);
-        doing.value = null;
+        if (doing.value == actionsJoystick["up"] || doing.value == actionsJoystick["down"]) {
+            fireAjaxRequest(doing.value);
+            doing.value = null;
+        }
 
 //        Object.keys(actionsJoystick).forEach(function(entry) {
 //            strToEval = "if (joystick."+entry+"()){fireAjaxRequest('"+actionsJoystick[entry]+"');}";
