@@ -96,9 +96,9 @@ $(document).ready(function(){
     $(document).on('keyup', function(e) {
         if (e.which === keyCodes['up'] || e.which === keyCodes['down']) {
             fireAjaxRequest(doingKb);
-            doingKb = null;
-            down[e.keyCode] = null;
         }
+        doingKb = null;
+        down[e.keyCode] = null;
     });
 
     var handlerkeyDown = function(e, keyCode) {
