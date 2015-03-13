@@ -7,5 +7,4 @@ export LD_LIBRARY_PATH=.
 sudo modprobe -r i2c_bcm2708 && sudo modprobe i2c_bcm2708 baudrate=200000
 
 cd /home/pi/workspace/dum.bot
-sudo nice -10 python webdumbot.py &
-
+sudo nice -n13 python webdumbot.py &

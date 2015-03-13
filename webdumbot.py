@@ -8,7 +8,7 @@ from cherrypy.lib.static import serve_file
 from gpiodcmotors import *
 from gpioservo import *
 from constantes import *
-from modeauto import Autothread
+from obstacleavoider import Obstacleavoider
 
 
 path = os.path.abspath(os.path.dirname(__file__))
@@ -18,7 +18,7 @@ class Webdumbot(object):
     def __init__(self):
         self.gpiodcmotors = Gpiodcmotors()
         self.gpioservo = Gpioservo()
-        self.autothread = Autothread('Auto thread')
+        self.obstaclethread = Obstacleavoider('Auto thread')
 
     @cherrypy.expose
     def index(self):
@@ -135,13 +135,13 @@ class Webdumbot(object):
         print("mode auto")
         # self.gpiodcmotors.triggerForward()
         # self.autothread = threading.Thread(target=self.launchautothread)
-        self.autothread.start()
+        self.obstaclethread.start()
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def modeManuel(self):
         print("mode manuel")
-        self.autothread.stop()
+        self.obstaclethread.stop()
 
     index.exposed = True
 
