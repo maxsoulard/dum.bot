@@ -114,6 +114,9 @@ $(document).ready(function(){
         stickRadius     : 120
     });
 
+    // TODO bug position stick in container
+    joystickL._container.style.position	= ""
+
     joystickL.addEventListener('touchStartValidation', function(event){
 		var touch	= event.changedTouches[0];
 		if( touch.pageX >= window.innerWidth/2 )	return false;
@@ -134,6 +137,9 @@ $(document).ready(function(){
         limitStickTravel: true,
         stickRadius     : 120
     });
+
+    // TODO bug position stick in container
+    joystickR._container.style.position	= ""
 
     joystickR.addEventListener('touchStartValidation', function(event){
 		var touch	= event.changedTouches[0];
