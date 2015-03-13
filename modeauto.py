@@ -1,3 +1,5 @@
+# -*- encoding: utf8 -*-
+
 import threading
 import time
 from trinket import TrinketI2C
