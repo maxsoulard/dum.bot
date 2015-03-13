@@ -1,17 +1,15 @@
 // Constantes
 // ajax
-
 const FORWARD = '/goForward';
 const BACKWARD = '/goBackward';
 const LEFT = '/turnLeft';
 const RIGHT = '/turnRight';
 
 // Kb actions
-keyCodes = {'up':90, 'down':83, 'left':81, 'right':68}
-actionsKb = {90:FORWARD, 83:BACKWARD, 81:LEFT, 68:RIGHT}
+keyCodes = {'up':90, 'down':83, 'left':81, 'right':68};
+actionsKb = {90:FORWARD, 83:BACKWARD, 81:LEFT, 68:RIGHT};
 
 // actions camera
-
 const C_UP = '/camUp';
 const C_DOWN = '/camDown';
 const C_LEFT = '/camLeft';
@@ -19,39 +17,28 @@ const C_RIGHT = '/camRight';
 const C_CENTER = '/camCenter';
 
 // Classes CSS
-
 const CSS_BUTTON_DISABLED = "pure-button-disabled";
 const CSS_BUTTON_AUTO = "#button-auto";
 const CSS_BUTTON_MANUEL = "#button-manuel";
 const CSS_BUTTON_RESET = "#button-reset";
 const CSS_BUTTON_STOP = "#button-stop";
 
-// pour les joysticks : maps d'actions
-var actionsJoystickL = new Array();
-actionsJoystickL["up"] = FORWARD;
-actionsJoystickL["down"] = BACKWARD;
-actionsJoystickL["left"] = LEFT;
-actionsJoystickL["right"] = RIGHT;
-
-var actionsJoystickR = new Array();
-actionsJoystickR["up"] = C_UP;
-actionsJoystickR["down"] = C_DOWN;
-actionsJoystickR["left"] = C_LEFT;
-actionsJoystickR["right"] = C_RIGHT;
-actionsJoystickR["center"] = C_CENTER;
+// actions joysticks L and R
+actionsJoystickL = {'up':FORWARD, 'down':BACKWARD, 'left':LEFT, 'right':RIGHT};
+actionsJoystickR = {'up':C_UP, 'down':C_DOWN, 'left':C_LEFT, 'right':C_RIGHT, 'center':C_CENTER};
 
 $(document).ready(function(){
     var doingKb = null; // Conserve l'action serveur en cours, commande keyboard
 
 	///////////////////////////////////
 	// Mjpeg stream img
-	////////////////////////
+	///////////////////////////////////
 
 	$("#stream").attr("src","http://"+document.location.hostname+":8083/?action=stream")
 
     ///////////////////////////////////
     // Handler sur les boutons
-    //////////////////////////////////
+    ///////////////////////////////////
 
 	// Init
 	$(CSS_BUTTON_MANUEL).toggleClass(CSS_BUTTON_DISABLED);
@@ -83,7 +70,7 @@ $(document).ready(function(){
 
     ///////////////////////////////////
     // Gestion du clavier
-    //////////////////////////////////
+    ///////////////////////////////////
 
     down = {}; // Conserve l'état des touches actionnées
     $(document).on('keydown', function(e) {
@@ -113,9 +100,9 @@ $(document).ready(function(){
         if (url != null)    var request = $.ajax({'url': url});
     };
 
-    ///////////////////////////////////
+    ////////////////////////////////////////
     // Gestion du joystick gauche (moteurs)
-    //////////////////////////////////
+    ////////////////////////////////////////
 
     var doingJsL = {};
     var baseXJoystickL = null;
@@ -134,9 +121,9 @@ $(document).ready(function(){
 		return true
 	});
 
-	///////////////////////////////////
+	///////////////////////////////////////
     // Gestion du joystick droit (caméra)
-    //////////////////////////////////
+    ///////////////////////////////////////
 
     var doingJsR = {};
     var baseXJoystickR = null;
@@ -155,9 +142,9 @@ $(document).ready(function(){
 		return true
 	});
 
-    ///////////////////////////////////
+    ///////////////////////////////////////////////
     // Appel des handlers sur les deux joysticks
-    //////////////////////////////////
+    ///////////////////////////////////////////////
 
     animate();
     function animate(){
@@ -174,12 +161,9 @@ $(document).ready(function(){
         handlerJoystickEnd(joystickL);
     });
 
-	//handlerJoystickEnd(joystick, doingJsL, actionsJoystickL, event));
-    //joystick.addEventListener('touchEnd', handlerJoystickEnd(joystick, doingJsR, actionsJoystickR, event));
-
 	///////////////////////////////////
     // Joystick - commun
-    //////////////////////////////////
+    ///////////////////////////////////
 
     function handlerJoystickEnd(joystick) {
         var determineJoystick = new DetermineJoystick(joystick._baseX);
@@ -188,15 +172,6 @@ $(document).ready(function(){
 
         if (doing.value == actionsJoystick["up"] || doing.value == actionsJoystick["down"]) fireAjaxRequest(doing.value);
         doing.value = null;
-
-//        Object.keys(actionsJoystick).forEach(function(entry) {
-//            strToEval = "if (joystick."+entry+"()){fireAjaxRequest('"+actionsJoystick[entry]+"');}";
-//            eval(strToEval);
-
-//            fireAjaxRequest(actionsJoystick[entry]);
-
-//            doing.value = null;
-//        });
     }
 
     function handlerJoystickStart(joystick) {
