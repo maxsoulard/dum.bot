@@ -8,7 +8,7 @@ const RIGHT = '/turnRight';
 
 // Kb actions
 keyCodes = {'up':90, 'down':68, 'left':81, 'right':83}
-actionsKb = {keyCodes['up']:FORWARD, keyCodes['down']:BACKWARD, keyCodes['left']:LEFT, keyCodes['right']:RIGHT}
+actionsKb = {90:FORWARD, 68:BACKWARD, 81:LEFT, 83:RIGHT}
 
 // actions camera
 
