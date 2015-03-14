@@ -10,18 +10,23 @@ class Obstacleavoider(threading.Thread):
     def __init__(self, nom=''):
         threading.Thread.__init__(self)
         self.nom = nom
-        self.Terminated = False
         self.trinket = TrinketI2C()
         self.gpiodcmotors = Gpiodcmotors()
         self.previousactions = []
+        self.paused = False
+        self.state = threading.Condition()
 
     def run(self):
         vals = []
-        self.gpiodcmotors.triggerForward()
         clear = True
         next = ''
+        self.tstarted = True
+        self.resume()
 
-        while not self.Terminated:
+        while True:
+            with self.state:
+                if self.paused:
+                    self.state.wait()
             try:
                 valtemp = self.trinket.readvalues()
                 if valtemp is not None:
@@ -38,13 +43,16 @@ class Obstacleavoider(threading.Thread):
                         av = sum(vals, 0.0) / len(vals)
                         # reads can now be interpreted
                         print "trinket distance average : "+str(av)
+                        next = ''
                         if av < 10:
                             sltime = 0.2
+                            # if there is still an obstacle
                             if not clear:
                                 sltime = 0.6
-                                if self.previousactions[-1] == 'left':
+                                # if bot already tried left, let's try right
+                                if self.previousactions[-1] == 'left' or self.previousactions[-2] == 'left':
                                     next = 'right'
-                                elif self.previousactions[-1] == 'right':
+                                elif self.previousactions[-1] == 'right' or self.previousactions[-2] == 'left':
                                     next = 'left'
                                     sltime = 1
 
@@ -56,9 +64,9 @@ class Obstacleavoider(threading.Thread):
                             self.__do('backward', sltime)
 
                             if next == 'left':
-                                self.__do('left', 4)
+                                self.__do('left', 3)
                             elif next == 'right':
-                                self.__do('right', 4)
+                                self.__do('right', 3)
                             else:
                                 print "try left"
                                 # let's try left
@@ -101,6 +109,16 @@ class Obstacleavoider(threading.Thread):
 
         self.previousactions.append(args[0])
 
-    def stop(self):
-        self.Terminated = True
-        self.gpiodcmotors.reset()
+    def pause(self):
+        with self.state:
+            self.gpiodcmotors.reset()
+            self.paused = True
+
+    def resume(self):
+        with self.state:
+            self.paused = False
+            self.state.notify()
+            self.gpiodcmotors.triggerForward()
+
+    def status(self):
+        return self.paused

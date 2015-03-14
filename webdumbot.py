@@ -128,13 +128,16 @@ class Webdumbot(object):
         print("mode auto")
         # self.gpiodcmotors.triggerForward()
         # self.autothread = threading.Thread(target=self.launchautothread)
-        self.obstaclethread.start()
+        if not self.obstaclethread.paused:
+            self.obstaclethread.start()
+        else:
+            self.obstaclethread.resume()
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def modeManuel(self):
         print("mode manuel")
-        self.obstaclethread.stop()
+        self.obstaclethread.pause()
 
     index.exposed = True
 
