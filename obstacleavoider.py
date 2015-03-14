@@ -19,6 +19,7 @@ class Obstacleavoider(threading.Thread):
         vals = []
         self.gpiodcmotors.triggerForward()
         clear = True
+        next = ''
 
         while not self.Terminated:
             try:
@@ -30,7 +31,7 @@ class Obstacleavoider(threading.Thread):
                         # if 10 values were read, calculate the average without too big values which are probably errors
                         # delete big values
                         for v in vals:
-                            # TO__do ignore lower and higher values
+                            # TODO ignore lower and higher values
                             if len(str(v)) > 2:
                                 vals.remove(v)
                         # average
@@ -41,9 +42,9 @@ class Obstacleavoider(threading.Thread):
                             sltime = 0.2
                             if not clear:
                                 sltime = 0.6
-                                if self.previousactions[-1] == 'left' and self.previousactions[-2] == 'left':
+                                if self.previousactions[-1] == 'left':
                                     next = 'right'
-                                elif self.previousactions[-1] == 'right' and self.previousactions[-2] == 'right':
+                                elif self.previousactions[-1] == 'right':
                                     next = 'left'
                                     sltime = 1
 
@@ -55,15 +56,16 @@ class Obstacleavoider(threading.Thread):
                             self.__do('backward', sltime)
 
                             if next == 'left':
-                                self.__do('left', 2)
-
-                            if next == 'right':
+                                self.__do('left', 4)
+                            elif next == 'right':
                                 self.__do('right', 4)
                             else:
+                                print "try left"
                                 # let's try left
-                                self.__do('left')
+                                self.__do('left', 1)
 
                         elif not clear:
+                            print "way seems clear"
                             # way seems clear, let's hit the road
                             clear = True
                             self.__do('forward', None)
@@ -75,6 +77,7 @@ class Obstacleavoider(threading.Thread):
                 pass
 
     def __do(self, *args):
+        print "__do args "+str(args[0])+" "+str(args[1])
         if args[0] == 'forward':
             self.gpiodcmotors.triggerForward()
             if args[1] is not None:
@@ -88,12 +91,12 @@ class Obstacleavoider(threading.Thread):
 
         elif args[0] == 'right':
             if args[1] is not None:
-                for i in range(1, int(args[1])):
+                for i in range(0, int(args[1])):
                     self.gpiodcmotors.triggerRight()
 
         elif args[0] == 'left':
             if args[1] is not None:
-                for i in range(1, int(args[1])):
+                for i in range(0, int(args[1])):
                     self.gpiodcmotors.triggerLeft()
 
         self.previousactions.append(args[0])
