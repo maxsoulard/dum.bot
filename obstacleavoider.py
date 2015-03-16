@@ -22,6 +22,9 @@ class Obstacleavoider(threading.Thread):
         next = ''
         self.tstarted = True
         self.resume()
+        # actions counters
+        self.left = 0
+        self.right = 0
 
         while True:
             with self.state:
@@ -50,9 +53,9 @@ class Obstacleavoider(threading.Thread):
                             if not clear:
                                 sltime = 0.6
                                 # if bot already tried left, let's try right
-                                if self.previousactions[-1] == 'left' or self.previousactions[-2] == 'left':
+                                if self.previousactions[-1] == 'left' and self.left > 2:
                                     next = 'right'
-                                elif self.previousactions[-1] == 'right' or self.previousactions[-2] == 'left':
+                                elif self.previousactions[-1] == 'right' and self.right > 2:
                                     next = 'left'
                                     sltime = 1
 
@@ -68,9 +71,14 @@ class Obstacleavoider(threading.Thread):
                             elif next == 'right':
                                 self.__do('right', 3)
                             else:
-                                print "try left"
-                                # let's try left
-                                self.__do('left', 1)
+                                if self.left < 2:
+                                    print "try left"
+                                    # let's try left
+                                    self.__do('left', 1)
+                                else:
+                                    print "try right"
+                                    # let's try left
+                                    self.__do('right', 1)
 
                         elif not clear:
                             print "way seems clear"
@@ -101,11 +109,15 @@ class Obstacleavoider(threading.Thread):
             if args[1] is not None:
                 for i in range(0, int(args[1])):
                     self.gpiodcmotors.triggerRight()
+                    self.right += 1
+                    self.left = 0
 
         elif args[0] == 'left':
             if args[1] is not None:
                 for i in range(0, int(args[1])):
                     self.gpiodcmotors.triggerLeft()
+                    self.left += 1
+                    self.right = 0
 
         self.previousactions.append(args[0])
 
