@@ -53,9 +53,9 @@ class Obstacleavoider(threading.Thread):
                             if not clear:
                                 sltime = 0.6
                                 # if bot already tried left, let's try right
-                                if self.previousactions[-1] == 'left' and self.left > 2:
+                                if self.previousactions[-1] == 'left' and self.left > 4:
                                     next = 'right'
-                                elif self.previousactions[-1] == 'right' and self.right > 2:
+                                elif self.previousactions[-1] == 'right' and self.right > 4:
                                     next = 'left'
                                     sltime = 1
 
@@ -110,7 +110,8 @@ class Obstacleavoider(threading.Thread):
                 for i in range(0, int(args[1])):
                     self.gpiodcmotors.triggerRight()
                     self.right += 1
-                    self.left = 0
+                    if self.right > 4:
+                        self.left = 0
 
         elif args[0] == 'left':
             if args[1] is not None:

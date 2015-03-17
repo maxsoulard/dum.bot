@@ -37,7 +37,7 @@ class Gpiodcmotors:
     def triggerRight(self):
         self.gpio8.output(not self.gpio8.status)
         self.gpio10.output(not self.gpio10.status)
-        time.sleep(0.2)
+        time.sleep(0.1)
         self.gpio8.output(not self.gpio8.status)
         self.gpio10.output(not self.gpio10.status)
 
@@ -45,7 +45,7 @@ class Gpiodcmotors:
     def triggerLeft(self):
         self.gpio7.output(not self.gpio7.status)
         self.gpio16.output(not self.gpio16.status)
-        time.sleep(0.2)
+        time.sleep(0.1)
         self.gpio7.output(not self.gpio7.status)
         self.gpio16.output(not self.gpio16.status)
 
