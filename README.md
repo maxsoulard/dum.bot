@@ -38,6 +38,10 @@ Arduino code is pretty simple. I will add a servomotor soon but the Trinket has 
 
 A simple algorithm to avoid detected obstacle thanks to datas sent by the Trinket. Basically, if an obstacle is closer than 10 centimeters, dum.bot goes back for 200 ms then turn left. If another obstacle is detected, it tries left again. If the way is still not clear, it turns right to check it out. To have a more precise value for obstacle range, it reads 5 values, then removes the min and max values and calculate the average from the 3 left.
 
+<b>Electronic</b> (.fzz in docs)
+
+<img src="https://raw.githubusercontent.com/maxsoulard/dum.bot/master/docs/dum.bot.png" />
+
 <b>TODO</b>
 
 <ul>
