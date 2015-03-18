@@ -4,6 +4,8 @@ Small two wheels robot controlled through a webapp or autonomous with ultrasonic
 
 <img src="http://letsmakerobots.com/files/userpics/u23549/2015-03-12_17_46_29.jpg" />
 
+<img src="http://i.imgur.com/LmgWtXQ.gif" />
+
 <b>Parts</b>
 
 <ul>
