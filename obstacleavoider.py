@@ -116,7 +116,8 @@ class Obstacleavoider(threading.Thread):
                 for i in range(0, int(args[1])):
                     self.gpiodcmotors.triggerLeft()
                     self.left += 1
-                    self.right = 0
+                    if self.left > 4:
+                        self.right = 0
 
         self.previousactions.append(args[0])
 
