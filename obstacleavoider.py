@@ -38,10 +38,8 @@ class Obstacleavoider(threading.Thread):
                     if len(vals) == 5:
                         # if 10 values were read, calculate the average without too big values which are probably errors
                         # delete big values
-                        for v in vals:
-                            # TODO ignore lower and higher values
-                            if len(str(v)) > 2:
-                                vals.remove(v)
+                        vals.remove(min(vals))
+                        vals.remove(max(vals))
                         # average
                         av = sum(vals, 0.0) / len(vals)
                         # reads can now be interpreted
